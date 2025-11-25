@@ -37,7 +37,7 @@ const Radar = ({
         <img onWheelCapture={onScroll} ref={radarImageRef} className={`w-full h-auto`} src={radarImage} draggable={false} style={{scale: `${radarScale}`, transition: "scale 150ms linear"}}/>
       </Draggable>
 
-      {playerArray.map((player) => (
+      {playerArray && playerArray!=null && playerArray.map((player) => (
         <Player
           key={player.m_idx}
           playerData={player}
@@ -85,7 +85,7 @@ const Radar = ({
         />
       ))}
 
-      {settings.showDroppedWeapons && droppedWeaponsData && droppedWeaponsData!={} && droppedWeaponsData.map((droppedWeapon) => (
+      {settings.showDroppedWeapons && droppedWeaponsData && droppedWeaponsData!=null && droppedWeaponsData.map((droppedWeapon) => (
         <DroppedWeapon
           key={droppedWeapon.m_idx}
           droppedWeaponData={droppedWeapon}
