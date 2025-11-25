@@ -28,7 +28,10 @@ export const calculatePositionWithScale = (radarImage, radarPosition) => {
   let transformX = 0;
   let transformY = 0;
   const transMatch = transformString.match(/translate\(\s*([+-]?\d+(\.\d+)?)px,\s*([+-]?\d+(\.\d+)?)px\)/);
-  if (transMatch) {
+  if (radarImage.getAttribute("moveoverride")=="true") {
+    transformX = Number(radarImage.getAttribute("newtransx"));
+    transformY = Number(radarImage.getAttribute("newtransy"));
+  } else if (transMatch) {
     transformX = Number(transMatch[1]);
     transformY = Number(transMatch[3]);
   }
@@ -47,7 +50,9 @@ export const calculatePositionWithScale = (radarImage, radarPosition) => {
     if (rotMatch) rotStr = rotMatch[1];
   }
 
-  if (rotStr) {
+  if (radarImage.getAttribute("moveoverride")=="true") {
+    angleRad = Number(radarImage.getAttribute("newrotation")) * (Math.PI / 180);
+  } else if (rotStr) {
     const s = rotStr.trim();
     angleRad = Number(s.slice(0, -3)) * (Math.PI / 180);
     if (!isFinite(angleRad)) angleRad = 0;

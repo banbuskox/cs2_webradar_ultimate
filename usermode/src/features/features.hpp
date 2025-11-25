@@ -1,5 +1,18 @@
 #pragma once
 
+namespace hashes
+{
+	static auto PLAYER_CONTROLLER = fnv1a::hash("CCSPlayerController");
+	static auto C4 = fnv1a::hash("C_C4");
+	static auto PLANTED_C4 = fnv1a::hash("C_PlantedC4");
+	static auto SMOKE = fnv1a::hash("C_SmokeGrenadeProjectile");
+	static auto INFERNO = fnv1a::hash("C_Inferno");
+	static auto HE = fnv1a::hash("C_HEGrenadeProjectile");
+	static auto FLASH = fnv1a::hash("C_FlashbangProjectile");
+	static auto DECOY = fnv1a::hash("C_DecoyProjectile");
+	static auto MOLOTOV = fnv1a::hash("C_MolotovProjectile");
+}
+
 namespace f::players
 {
 	bool get_data(int32_t idx, c_cs_player_controller* player, c_cs_player_pawn* player_pawn);
@@ -15,15 +28,15 @@ namespace f::bomb
 
 namespace f::dropped_weapons
 {
-	bool is_weapon(std::string weapon_name);
-	void get_weapon(c_base_entity* weapon);
+	bool is_weapon(const std::string& weapon_name);
+	bool get_weapon(c_base_entity* weapon);
 }
 
 namespace f::grenades
 {
-	void get_smoke(c_smoke_grenade* smoke);
-	void get_molo(c_molo_grenade* molo);
-	void get_thrown(c_base_grenade* nade, std::string designer_name);
+	bool get_smoke(c_smoke_grenade* smoke);
+	bool get_molo(c_molo_grenade* molo);
+	bool get_thrown(c_base_grenade* nade);
 }
 
 namespace f

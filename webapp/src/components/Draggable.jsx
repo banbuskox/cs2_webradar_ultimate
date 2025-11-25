@@ -81,7 +81,7 @@ const Draggable = ({ children, imgref, avrPing, radarContentRef, ...props }) => 
                 ...children.props.style,
                 rotate: `${rotation}deg`,
                 transform: `translate(${position.x}px, ${position.y}px)`,
-                transition: `transform ${avrPing}ms linear, scale 100ms linear`
+                transition: `transform ${avrPing}ms linear, rotate ${avrPing}ms linear, scale ${avrPing}ms linear`
               },
             },
           }

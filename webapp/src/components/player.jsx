@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { getRadarPosition, playerColors, calculatePositionWithScale, calculateMapOffsetForCentering } from "../utilities/utilities";
-import { use } from "react";
 
 let playerRotations = [];
 const calculatePlayerRotation = (playerData, radarImage) => {
@@ -40,6 +39,8 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
   const playerBounding = (playerRef.current &&
     playerRef.current.getBoundingClientRect()) || { width: 0, height: 0 };
   const playerRotation = calculatePlayerRotation(playerData, radarImage);
+  const prevPlayerRotation = useRef(playerRotation);
+  const cumulativePlayerRotation = useRef(playerRotation);
   const [scaledSize, setScaledSize] = useState(0.7 * settings.dotSize);
 
   useEffect(() => {
@@ -76,22 +77,26 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
     y: (scaledPos[1] - playerBounding.height * 0.5),
   };
 
-
-  if (playerData.m_steam_id==settings.whichPlayerAreYou) {
+  if (playerData.m_steam_id == settings.whichPlayerAreYou) {
     if (radarImage && mapData && playerData.m_position && settings.followYourself && !playerData.m_is_dead) {
       const radarOffset = calculateMapOffsetForCentering(playerData.m_position, radarImage, mapData);
-      if (radarImage.getAttribute("isbeingdragged")=="false") {
-        let playerRotation = 0;
-        const playerViewAngle = 270 - playerData.m_eye_angle;
+      if (radarImage.getAttribute("isbeingdragged") == "false") {
 
-        playerRotation = (playerRotation || 0) % 360;
-        playerRotation += ((playerViewAngle - playerRotation + 540) % 360);
+        const currentRawRotation = 270 - playerData.m_eye_angle - 180;
+        let delta = currentRawRotation - prevPlayerRotation.current;
+
+        if (delta > 180) delta -= 360;
+        else if (delta < -180) delta += 360;
+
+        cumulativePlayerRotation.current += delta;
+        prevPlayerRotation.current = currentRawRotation;
 
         radarImage.setAttribute("moveoverride", "true")
         radarImage.setAttribute("newtransx", `${Math.floor(radarOffset.x)}`)
         radarImage.setAttribute("newtransy", `${Math.floor(radarOffset.y)}`)
+
         if (settings.followYourselfRotation) {
-          radarImage.setAttribute("newrotation", `${Math.floor(-playerRotation)}`)
+          radarImage.setAttribute("newrotation", `${-cumulativePlayerRotation.current.toFixed(2)}`)
         } else {
           radarImage.setAttribute("newrotation", "0")
         }
@@ -132,7 +137,6 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
           transform: `rotate(${(playerData.m_is_dead && `0`) || playerRotation}deg)`,
           width: `${scaledSize}vw`,
           height: `${scaledSize}vw`,
-          transition: `transform ${averageLatency}ms linear`,
           opacity: `${(playerData.m_is_dead && `0.8`) || (invalidPosition && `0`) || `1`}`,
         }}
       >
@@ -140,7 +144,6 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
         <div
           className={`w-full h-full rounded-[50%_50%_50%_0%] rotate-[315deg]`}
           style={{
-
             backgroundColor: `${(playerData.m_team == localTeam && playerColors[playerData.m_color]) || (settings.showOnlyEnemies && playerData.m_team != localTeam && playerColors[playerData.m_color]) || `red`}`,
             opacity: `${(playerData.m_is_dead && `0.8`) || (invalidPosition && `0`) || `1`}`,
             border: `${(playerData.m_team != localTeam && `1.5px solid white`) || `none`}`,

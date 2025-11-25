@@ -26,8 +26,6 @@ const Radar = ({
     if (newScale>0.3&&newScale<4) setRadarScale(newScale)
   };
 
-
-
   return (
     <div id="radar" className={`relative overflow-hidden origin-center`} ref={radarContentRef}>
 
@@ -63,7 +61,7 @@ const Radar = ({
         />
       )}
 
-      {grenadeData && grenadeData["landed"]!={} && settings.showGrenades && grenadeData["landed"].map((grenade) => (
+      {grenadeData && grenadeData["landed"]!=null && settings.showGrenades && grenadeData["landed"].map((grenade) => (
         <Grenade
           key={grenade.m_idx}
           grenadeData={grenade}
@@ -75,7 +73,7 @@ const Radar = ({
         />
       ))}
 
-      {grenadeData && grenadeData["thrown"]!={} && settings.showGrenades && grenadeData["thrown"].map((grenade) => (
+      {grenadeData && grenadeData["thrown"]!=null && settings.showGrenades && grenadeData["thrown"].map((grenade) => (
         <Grenade
           key={grenade.m_idx}
           grenadeData={grenade}
