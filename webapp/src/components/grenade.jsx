@@ -45,6 +45,7 @@ const Grenade = ({ grenadeData, mapData, settings, averageLatency, radarImage, t
             className={`absolute rounded-[100%] left-0 top-0`}
             style={{
               transform: `translate(${radarImageTranslation.x}px, ${radarImageTranslation.y}px)`,
+              transition: `transform ${averageLatency}ms linear`,
             }}
           >
 
