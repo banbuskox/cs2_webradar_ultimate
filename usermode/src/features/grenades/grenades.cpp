@@ -5,21 +5,26 @@
 
 bool f::grenades::get_smoke(c_smoke_grenade* smoke)
 {
+	const auto begin_tick = smoke->m_nSmokeEffectTickBegin();
+	if (begin_tick <= 0)
+		return false;
+
 	const auto curtime = i::m_global_vars->m_curtime();
 
-	const auto dis_time = 21.5f - (curtime - TICKS_TO_TIME(smoke->m_nSmokeEffectTickBegin()));
+	const auto dis_time = 21.5f - (curtime - TICKS_TO_TIME(begin_tick));
 	if (dis_time <= 0.f)
 		return false;
 
-	const auto detPos = smoke->m_vSmokeDetonationPos();
-
-	if (detPos.is_zero())
+	const auto det_pos = smoke->m_vSmokeDetonationPos();
+	if (det_pos.is_zero())
 		return false;
 
-	m_grenade_data["m_type"] = "smoke";
-	m_grenade_data["m_timeleft"] = dis_time;
-	m_grenade_data["m_x"] = detPos.m_x;
-	m_grenade_data["m_y"] = detPos.m_y;
+	m_grenade_data = {
+		{"m_type", "smoke"},
+		{"m_timeleft", dis_time},
+		{"m_x", det_pos.m_x},
+		{"m_y", det_pos.m_y}
+	};
 
 	return true;
 }
@@ -27,54 +32,68 @@ bool f::grenades::get_smoke(c_smoke_grenade* smoke)
 bool f::grenades::get_molo(c_molo_grenade* molo)
 {
 	const auto curtime = i::m_global_vars->m_curtime();
-	const auto fireBurning = molo->m_bFireIsBurning();
-	const auto firePositions = molo->m_firePositions();
-	const auto nadeTime = 7.f;
+	const auto begin_tick = molo->m_nFireEffectTickBegin();
 
-	const auto dis_time = nadeTime - (curtime - TICKS_TO_TIME(molo->m_nFireEffectTickBegin()));
+	const auto dis_time = 7.f - (curtime - TICKS_TO_TIME(begin_tick));
 	if (dis_time <= 0.f)
 		return false;
 
-	const auto vec_origin = molo->m_pGameSceneNode()->m_vecOrigin();
+	const auto scene_node = molo->m_pGameSceneNode();
+	if (!scene_node)
+		return false;
 
-	
-	m_grenade_data["m_firePositions"] = nlohmann::json{};
+	const auto vec_origin = scene_node->m_vecOrigin();
 
-	for (int i = 0; i <= molo->m_fireCount(); i++)
+	auto firePosLocal = nlohmann::json{};
+
+	const auto fireBurning = molo->m_bFireIsBurning();
+	const auto firePositions = molo->m_firePositions();
+	const int fireCount = molo->m_fireCount();
+
+	for (int i = 0; i <= fireCount; i++)
 	{
 		if (!fireBurning[i])
 			continue;
 
-		m_grenade_data["m_firePositions"].push_back({ firePositions[i].m_x, firePositions[i].m_y });
+		firePosLocal.push_back({ firePositions[i].m_x, firePositions[i].m_y });
 	}
 
-	if (m_grenade_data["m_firePositions"].empty())
+	if (firePosLocal.empty())
 		return false;
 
-	m_grenade_data["m_type"] = "molo";
-	m_grenade_data["m_timeleft"] = dis_time;
-	m_grenade_data["m_x"] = vec_origin.m_x;
-	m_grenade_data["m_y"] = vec_origin.m_y;
+	m_grenade_data = {
+		{"m_type", "molo"},
+		{"m_timeleft", dis_time},
+		{"m_x", vec_origin.m_x},
+		{"m_y", vec_origin.m_y},
+		{"m_firePositions", std::move(firePosLocal)}
+	};
 
 	return true;
 }
 
 bool f::grenades::get_thrown(c_base_grenade* nade) 
 {
-	const auto nadePos = nade->m_pGameSceneNode()->m_vecOrigin();
-	auto designer_name = nade->m_pEntity()->m_designerName();
-
+	const auto scene_node = nade->m_pGameSceneNode();
+	if (!scene_node)
+		return false;
+	
+	const auto nadePos = scene_node->m_vecOrigin();
+	if (nadePos.is_zero())
+		return false;
+	
+	const std::string designer_name_stor = nade->m_pEntity()->m_designerName();
+	std::string_view designer_name = designer_name_stor;
 	if (designer_name.empty())
 		return false;
 
-	designer_name.erase(designer_name.end() - 11, designer_name.end());
+	designer_name.remove_suffix(11);
 
-	if (nadePos.is_zero())
-		return false;
-
-	m_grenade_thrown_data["m_type"] = designer_name;
-	m_grenade_thrown_data["m_x"] = nadePos.m_x;
-	m_grenade_thrown_data["m_y"] = nadePos.m_y;
+	m_grenade_thrown_data = {
+		{"m_type", designer_name},
+		{"m_x", nadePos.m_x},
+		{"m_y", nadePos.m_y}
+	};
 
 	return true;
 }

@@ -41,7 +41,7 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
   const playerRotation = calculatePlayerRotation(playerData, radarImage);
   const prevPlayerRotation = useRef(playerRotation);
   const cumulativePlayerRotation = useRef(playerRotation);
-  const [scaledSize, setScaledSize] = useState(0.7 * settings.dotSize);
+  const [scaledSize, setScaledSize] = useState(settings.showOnlyEnemies? 0.7 * settings.dotSize : 0);
 
   useEffect(() => {
     if (window.innerHeight<=500) setScaledSize(0.7 * settings.dotSize+1.5); else setScaledSize(0.7 * settings.dotSize);

@@ -2,15 +2,15 @@
 
 namespace hashes
 {
-	static auto PLAYER_CONTROLLER = fnv1a::hash("CCSPlayerController");
-	static auto C4 = fnv1a::hash("C_C4");
-	static auto PLANTED_C4 = fnv1a::hash("C_PlantedC4");
-	static auto SMOKE = fnv1a::hash("C_SmokeGrenadeProjectile");
-	static auto INFERNO = fnv1a::hash("C_Inferno");
-	static auto HE = fnv1a::hash("C_HEGrenadeProjectile");
-	static auto FLASH = fnv1a::hash("C_FlashbangProjectile");
-	static auto DECOY = fnv1a::hash("C_DecoyProjectile");
-	static auto MOLOTOV = fnv1a::hash("C_MolotovProjectile");
+	const auto PLAYER_CONTROLLER = fnv1a::hash_const("CCSPlayerController");
+	const auto C4 = fnv1a::hash_const("C_C4");
+	const auto PLANTED_C4 = fnv1a::hash_const("C_PlantedC4");
+	const auto SMOKE = fnv1a::hash_const("C_SmokeGrenadeProjectile");
+	const auto INFERNO = fnv1a::hash_const("C_Inferno");
+	const auto HE = fnv1a::hash_const("C_HEGrenadeProjectile");
+	const auto FLASH = fnv1a::hash_const("C_FlashbangProjectile");
+	const auto DECOY = fnv1a::hash_const("C_DecoyProjectile");
+	const auto MOLOTOV = fnv1a::hash_const("C_MolotovProjectile");
 }
 
 namespace f::players
@@ -28,7 +28,7 @@ namespace f::bomb
 
 namespace f::dropped_weapons
 {
-	bool is_weapon(const std::string& weapon_name);
+	bool is_weapon(const std::string_view weapon_name);
 	bool get_weapon(c_base_entity* weapon);
 }
 

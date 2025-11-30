@@ -140,7 +140,7 @@ DWORD WINAPI AppLogic(LPVOID lpParam)
     {
         const auto now = std::chrono::system_clock::now();
         const auto duration = now - start;
-        if (duration >= std::chrono::milliseconds(30))
+        if (duration >= std::chrono::milliseconds(45))
         {
             start = now;
 

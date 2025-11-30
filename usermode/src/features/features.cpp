@@ -40,7 +40,8 @@ void f::get_player_info()
 	auto* entity_system = i::m_game_entity_system;
 
 	const int32_t highest_idx = 1024;
-	for (int32_t idx = 0; idx < 1024; idx++)
+
+	for (int32_t idx = 0; idx < highest_idx; idx++)
 	{
 		const auto entity = entity_system->get(idx);
 		if (!entity) continue;
@@ -53,8 +54,7 @@ void f::get_player_info()
 
 		const auto hashed_class_name = fnv1a::hash(class_name);
 
-		if (hashed_class_name == hashes::PLAYER_CONTROLLER)
-		{
+		if (hashed_class_name == hashes::PLAYER_CONTROLLER) {
 			const auto player = i::m_game_entity_system->get<c_cs_player_controller*>(entity_handle);
 			if (!player)
 				continue;
@@ -70,65 +70,71 @@ void f::get_player_info()
 			f::players::get_active_weapon(player_pawn);
 
 			m_data["m_players"].push_back(m_player_data);
+			continue;
 		}
-		else if (hashed_class_name == hashes::C4)
-		{
-			f::bomb::get_carried_bomb(entity);
-		}
-		else if (hashed_class_name == hashes::PLANTED_C4)
-		{
-			f::bomb::get_planted_bomb(reinterpret_cast<c_planted_c4*>(entity));
-		}
-		else if (hashed_class_name == hashes::SMOKE) {
 
-			m_grenade_data.clear();
-			m_grenade_thrown_data.clear();
+		switch (hashed_class_name) {
+			case hashes::C4:
+				f::bomb::get_carried_bomb(entity);
+				break;
 
-			const auto smoke = reinterpret_cast<c_smoke_grenade*>(entity);
-			
+			case hashes::PLANTED_C4:
+				f::bomb::get_planted_bomb(reinterpret_cast<c_planted_c4*>(entity));
+				break;
 
-			if (!f::grenades::get_smoke(smoke)) {
-				if (f::grenades::get_thrown(reinterpret_cast<c_base_grenade*>(entity))) {
+			case hashes::SMOKE:
+				m_grenade_data.clear();
+				m_grenade_thrown_data.clear();
 
-					m_grenade_thrown_data["m_idx"] = idx;
-					m_data["m_grenades"]["thrown"].push_back(m_grenade_thrown_data);
+				if (!f::grenades::get_smoke(reinterpret_cast<c_smoke_grenade*>(entity))) {
+					if (f::grenades::get_thrown(reinterpret_cast<c_base_grenade*>(entity))) {
 
+						m_grenade_thrown_data["m_idx"] = idx;
+						m_data["m_grenades"]["thrown"].push_back(m_grenade_thrown_data);
+
+					}
+					continue;
 				}
-				continue;
-			}
 
-			m_data["m_grenades"]["landed"].push_back(m_grenade_data);
-		}
-		else if (hashed_class_name == hashes::INFERNO) {
+				m_data["m_grenades"]["landed"].push_back(m_grenade_data);
+				break;
 
-			m_grenade_data.clear();
+			case hashes::INFERNO:
+				m_grenade_data.clear();
 
-			if (!f::grenades::get_molo(reinterpret_cast<c_molo_grenade*>(entity)))
-				continue;
+				if (!f::grenades::get_molo(reinterpret_cast<c_molo_grenade*>(entity)))
+					continue;
 
-			m_data["m_grenades"]["landed"].push_back(m_grenade_data);
-		}
-		else if (hashed_class_name == hashes::HE || hashed_class_name == hashes::FLASH || hashed_class_name == hashes::DECOY || hashed_class_name == hashes::MOLOTOV)
-		{
-			m_grenade_thrown_data.clear();
+				m_data["m_grenades"]["landed"].push_back(m_grenade_data);
+				break;
 
-			if (!f::grenades::get_thrown(reinterpret_cast<c_base_grenade*>(entity)))
-				continue;
+			case hashes::HE:
+			case hashes::FLASH:
+			case hashes::DECOY:
+			case hashes::MOLOTOV:
+				m_grenade_thrown_data.clear();
 
-			m_grenade_thrown_data["m_idx"] = idx;
+				if (!f::grenades::get_thrown(reinterpret_cast<c_base_grenade*>(entity)))
+					continue;
 
-			m_data["m_grenades"]["thrown"].push_back(m_grenade_thrown_data);
-		}
-		else if (f::dropped_weapons::is_weapon(entity->m_pEntity()->m_designerName()))
-		{
-			m_dropped_weapon_data.clear();
+				m_grenade_thrown_data["m_idx"] = idx;
 
-			if (!f::dropped_weapons::get_weapon(reinterpret_cast<c_base_entity*>(entity)))
-				continue;
+				m_data["m_grenades"]["thrown"].push_back(m_grenade_thrown_data);
+				break;
 
-			m_dropped_weapon_data["m_idx"] = idx;
+			default:
+				if (f::dropped_weapons::is_weapon(entity->m_pEntity()->m_designerName()))
+				{
+					m_dropped_weapon_data.clear();
 
-			m_data["m_dropped_weapons"].push_back(m_dropped_weapon_data);
+					if (!f::dropped_weapons::get_weapon(reinterpret_cast<c_base_entity*>(entity)))
+						continue;
+
+					m_dropped_weapon_data["m_idx"] = idx;
+
+					m_data["m_dropped_weapons"].push_back(m_dropped_weapon_data);
+				}
+				break;
 		}
 	}
 }

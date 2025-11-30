@@ -1,6 +1,6 @@
 #include "pch.hpp"
 
-bool f::dropped_weapons::is_weapon(const std::string& weapon_name)
+bool f::dropped_weapons::is_weapon(const std::string_view weapon_name)
 {
 	if (weapon_name.size() < 10 || weapon_name.size() > 20) return false;
 
@@ -17,20 +17,27 @@ bool f::dropped_weapons::get_weapon(c_base_entity* weapon)
 	if (vec_origin.is_zero())
 		return false;
 
-	std::string weapon_name = reinterpret_cast<c_base_player_weapon*>(weapon)->m_WeaponData()->m_szName();
+	const auto base_weapon = reinterpret_cast<c_base_player_weapon*>(weapon);
+	const auto base_weapon_data = base_weapon->m_WeaponData();
+	if (!base_weapon_data)
+		return false;
 
+	const std::string weapon_name = base_weapon_data->m_szName();
 	if (weapon_name.empty())
 		return false;
 
-	weapon_name.erase(weapon_name.begin(), weapon_name.begin() + 7);
+	const char* name_read_ptr = weapon_name.c_str();
+	name_read_ptr += 7;
 
 	if (vec_origin.is_zero())
 		return false;
 
 
-	m_dropped_weapon_data["m_name"] = weapon_name;
-	m_dropped_weapon_data["m_x"] = vec_origin.m_x;
-	m_dropped_weapon_data["m_y"] = vec_origin.m_y;
+	m_dropped_weapon_data = {
+		{"m_name", name_read_ptr},
+		{"m_x", vec_origin.m_x},
+		{"m_y", vec_origin.m_y}
+	};
 
 	return true;
 }

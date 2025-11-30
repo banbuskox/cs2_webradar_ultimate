@@ -18,87 +18,78 @@ const Grenade = ({ grenadeData, mapData, settings, averageLatency, radarImage, t
     y: (scaledPos[1] - grenBounding.height * 0.5),
   };
 
-  if(type == "landed") {
-  if (grenadeData.m_type == "smoke") {
-    return (
-      <GrenadeEffects
-        grenadeData={grenadeData}
-        type="smoke"
-        mapData={mapData}
-        settings={settings}
-        averageLatency={averageLatency}
-        radarImage={radarImage}
-      />
-    );
-  } else if (grenadeData.m_type == "molo") {
+  return (
+    <>
+      {(type == "landed") ? (
+      <>
+        {(grenadeData.m_type == "molo") ? (
+          <><div
+            className={`absolute rounded-[100%] left-0 top-0`}
+            style={{
+              opacity: `0.4`,
+            }}
+          >
 
-    return ( 
-      <div>
+            {firePositions[0] != null && firePositions.map((firePosition, index) => (
+              <GrenadeEffects
+                key={index}
+                grenadeData={{ m_x: firePosition[0], m_y: firePosition[1] }}
+                type="molo"
+                mapData={mapData}
+                settings={settings}
+                averageLatency={averageLatency}
+                radarImage={radarImage} />
+            ))}
 
-        <div
-        className={`absolute rounded-[100%] left-0 top-0`}
-        style={{
-          opacity: `0.4`,
-        }}
-        >
+          </div><div
+            className={`absolute rounded-[100%] left-0 top-0`}
+            style={{
+              transform: `translate(${radarImageTranslation.x}px, ${radarImageTranslation.y}px)`,
+            }}
+          >
 
-        {firePositions[0]!=null && firePositions.map((firePosition, index) => (
+              <label
+                className={`absolute w-full text-center text-white text-xs font-bold`}
+              >
+
+                {grenadeData.m_timeleft.toFixed(1)}s
+
+              </label>
+
+            </div></>
+        ) : (
           <GrenadeEffects
-            key={index}
-            grenadeData={{m_x: firePosition[0], m_y: firePosition[1]}}
-            type="molo"
+            grenadeData={grenadeData}
+            type="smoke"
             mapData={mapData}
             settings={settings}
             averageLatency={averageLatency}
             radarImage={radarImage}
           />
-        ))}
+        )}
 
-        </div>
-
+      </>
+      ) : (
         <div
-        className={`absolute rounded-[100%] left-0 top-0`}
+        ref={grenRef}
+        className={`absolute left-0 top-0`}
         style={{
           transform: `translate(${radarImageTranslation.x}px, ${radarImageTranslation.y}px)`,
+          transition: `transform ${averageLatency}ms linear`,
         }}
         >
         
-        <label
-        className={`absolute w-full text-center text-white text-xs font-bold`}
-        >
-        
-          {Math.round(grenadeData.m_timeleft)}s
-      
-        </label>
-      
+          <MaskedIcon
+            path={`./assets/icons/${grenadeData.m_type}.svg`}
+            height={`${settings.thrownGrenadeSize}vw`}
+            color={`${settings.thrownGrenadeColor}`}
+          />
+
         </div>
+      )}
+    </>
+  );
 
-      </div>
-    );
-    
-  }
-
-  } else {
-    return (
-      <div
-      ref={grenRef}
-      className={`absolute left-0 top-0`}
-      style={{
-        transform: `translate(${radarImageTranslation.x}px, ${radarImageTranslation.y}px)`,
-        transition: `transform ${averageLatency}ms linear`,
-      }}
-      >
-
-        <MaskedIcon
-          path={`./assets/icons/${grenadeData.m_type}.svg`}
-          height={`${settings.thrownGrenadeSize}vw`}
-          color={`${settings.thrownGrenadeColor}`}
-        />
-      
-      </div>
-        
-    )
-  } 
 };
 
 export default Grenade;

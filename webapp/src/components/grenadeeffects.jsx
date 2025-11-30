@@ -46,7 +46,7 @@ const GrenadeEffects = ({ grenadeData, type, mapData, settings, averageLatency, 
         className={`absolute w-full text-center text-white text-xs font-bold`}
         >
 
-        {Math.round(grenadeData.m_timeleft)}s
+        {grenadeData.m_timeleft.toFixed(1)}s
 
         </label>
 

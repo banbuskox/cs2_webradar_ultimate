@@ -6,28 +6,37 @@ bool f::players::get_data(int32_t idx, c_cs_player_controller* player, c_cs_play
 	const auto is_dead = health <= 0;
 	const auto vec_origin = player->get_vec_origin();
 	const auto team = player->m_iTeamNum();
+	const auto money_services = player->m_pInGameMoneyServices();
+	const auto item_services = player_pawn->m_pItemServices();
 
-	m_player_data["m_idx"] = idx;
-	m_player_data["m_name"] = player->m_sSanitizedPlayerName();
-	m_player_data["m_color"] = player->get_color();
-	m_player_data["m_team"] = team;
-	m_player_data["m_health"] = health;
-	m_player_data["m_is_dead"] = is_dead;
-	m_player_data["m_model_name"] = player_pawn->get_model_name();
-	m_player_data["m_steam_id"] = std::to_string(player->m_steamID());
-	m_player_data["m_money"] = player->m_pInGameMoneyServices()->m_iAccount();
-	m_player_data["m_armor"] = player_pawn->m_ArmorValue();
-	m_player_data["m_position"]["x"] = vec_origin.m_x;
-	m_player_data["m_position"]["y"] = vec_origin.m_y;
-	m_player_data["m_position"]["z"] = vec_origin.m_z;
-	m_player_data["m_eye_angle"] = player_pawn->m_angEyeAngles().m_y;
-	m_player_data["m_has_helmet"] = player_pawn->m_pItemServices()->m_bHasHelmet();
-	m_player_data["m_has_defuser"] = player_pawn->m_pItemServices()->m_bHasDefuser();
-	m_player_data["m_weapons"] = nlohmann::json{};
-	m_player_data["m_flashed"] = player_pawn->m_flFlashOverlayAlpha();
+	bool has_bomb = false;
+	if (team == e_team::t && !is_dead) {
+		has_bomb = (m_bomb_idx == (player->m_hPawn().get_entry_idx() & 0x7FFF));
+	}
 
-	if (team == e_team::t && !is_dead)
-		m_player_data["m_has_bomb"] = m_bomb_idx == (player->m_hPawn().get_entry_idx() & 0xffff);
+	m_player_data = {
+		{"m_idx", idx},
+		{"m_name", player->m_sSanitizedPlayerName()},
+		{"m_color", player->get_color()},
+		{"m_team", team},
+		{"m_health", health},
+		{"m_is_dead", is_dead},
+		{"m_model_name", player_pawn->get_model_name()},
+		{"m_steam_id", std::to_string(player->m_steamID())},
+		{"m_money", money_services ? money_services->m_iAccount() : 0},
+		{"m_armor", player_pawn->m_ArmorValue()},
+		{"m_position", {
+			{"x", vec_origin.m_x},
+			{"y", vec_origin.m_y},
+			{"z", vec_origin.m_z}
+		}},
+		{"m_eye_angle", player_pawn->m_angEyeAngles().m_y},
+		{"m_has_helmet", item_services ? item_services->m_bHasHelmet() : false},
+		{"m_has_defuser", item_services ? item_services->m_bHasDefuser() : false},
+		{"m_weapons", nlohmann::json{}},
+		{"m_flashed", player_pawn->m_flFlashOverlayAlpha()},
+		{"m_has_bomb", has_bomb}
+	};
 
 	return true;
 }
