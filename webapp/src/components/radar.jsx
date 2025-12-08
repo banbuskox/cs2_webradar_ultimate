@@ -15,6 +15,7 @@ const Radar = ({
   settings,
   grenadeData,
   droppedWeaponsData,
+  tempPlayer
 }) => {
   const radarImageRef = useRef();
   const radarContentRef = useRef();
@@ -47,6 +48,7 @@ const Radar = ({
           localTeam={localTeam}
           averageLatency={averageLatency}
           settings={settings}
+          tempPlayer={tempPlayer}
         />
       ))}
 

@@ -31,7 +31,7 @@ const calculatePlayerRotation = (playerData, radarImage) => {
   return playerRotations[idx] + mapAngleDeg;
 };
 
-const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, settings }) => {
+const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, settings, tempPlayer }) => {
   const [lastKnownPosition, setLastKnownPosition] = useState(null);
   const radarPosition = getRadarPosition(mapData, playerData.m_position) || { x: 0, y: 0 };
   const invalidPosition = radarPosition.x <= 0 && radarPosition.y <= 0;
@@ -115,6 +115,7 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
         height: `${scaledSize}vw`,
         transform: `translate(${radarImageTranslation.x}px, ${radarImageTranslation.y}px)`,
         transition: `transform ${averageLatency}ms linear`,
+        opacity: `${mapData.leveling && !playerData.m_is_dead && (playerData.m_position.z > mapData.level_change && tempPlayer.m_position.z < mapData.level_change && `0.5` || playerData.m_position.z < mapData.level_change && tempPlayer.m_position.z > mapData.level_change && `0.5` || `1`) || `1`}`,
         zIndex: `${(playerData.m_is_dead && `0`) || `1`}`,
         WebkitMask: `${(playerData.m_is_dead && `url('./assets/icons/icon-enemy-death_png.png') no-repeat center / contain`) || `none`}`,
       }}

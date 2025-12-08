@@ -272,6 +272,7 @@ const App = () => {
                 settings={settings}
                 grenadeData={grenadeData}
                 droppedWeaponsData={droppedWeaponsData}
+                tempPlayer={tempPlayer_}
               />
             </div>
           )) || (
