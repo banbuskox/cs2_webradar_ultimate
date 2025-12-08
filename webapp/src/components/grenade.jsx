@@ -24,6 +24,7 @@ const Grenade = ({ grenadeData, mapData, settings, averageLatency, radarImage, t
       <>
         {(grenadeData.m_type == "molo") ? (
           <><div
+            key={grenadeData.m_idx}
             className={`absolute rounded-[100%] left-0 top-0`}
             style={{
               opacity: `0.4`,

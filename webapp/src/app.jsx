@@ -247,12 +247,12 @@ const App = () => {
             setSettings={setSettings}
           />
 
-          <ul id="terrorist" className="lg:flex hidden flex-col gap-7 m-0 p-0">
+          <ul id="terrorist" className="lg:flex hidden flex-col gap-1 m-0 p-0">
             {(playerArray && playerArray.length > 0 && playerArray
               .filter((player) => player.m_team == 2)
               .map((player) => (
                 <PlayerCard
-                  right={false}
+                  isOnRightSide={false}
                   key={player.m_idx}
                   playerData={player}
                   settings={settings}
@@ -277,20 +277,20 @@ const App = () => {
           )) || (
               <div id="radar" className={`relative overflow-hidden origin-center`}>
                 <h1 className="radar_message">
-                  Connected! Please wait for the host to join the match.
+                  Connected! Please wait for the host to join match.
                 </h1>
               </div>
             )}
 
           <ul
             id="counterTerrorist"
-            className="lg:flex hidden flex-col gap-7 m-0 p-0"
+            className="lg:flex hidden flex-col gap-1 m-0 p-0"
           >
             {(playerArray && playerArray.length > 0 && playerArray
               .filter((player) => player.m_team == 3)
               .map((player) => (
                 <PlayerCard
-                  right={true}
+                  isOnRightSide={true}
                   key={player.m_idx}
                   playerData={player}
                   settings={settings}

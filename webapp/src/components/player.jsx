@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { getRadarPosition, playerColors, calculatePositionWithScale, calculateMapOffsetForCentering } from "../utilities/utilities";
+import { getRadarPosition, playerColors, calculatePositionWithScale, calculateMapOffsetForCentering, teamEnum } from "../utilities/utilities";
 
 let playerRotations = [];
 const calculatePlayerRotation = (playerData, radarImage) => {
@@ -41,7 +41,7 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
   const playerRotation = calculatePlayerRotation(playerData, radarImage);
   const prevPlayerRotation = useRef(playerRotation);
   const cumulativePlayerRotation = useRef(playerRotation);
-  const [scaledSize, setScaledSize] = useState(settings.showOnlyEnemies? 0.7 * settings.dotSize : 0);
+  const [scaledSize, setScaledSize] = useState(settings.showOnlyEnemies? 0 : (0.7 * settings.dotSize));
 
   useEffect(() => {
     if (window.innerHeight<=500) setScaledSize(0.7 * settings.dotSize+1.5); else setScaledSize(0.7 * settings.dotSize);
@@ -129,8 +129,6 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
         </div>
       ) : null}
 
-
-
       {/* Rotating container for player elements */}
       <div
         style={{
@@ -144,7 +142,7 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
         <div
           className={`w-full h-full rounded-[50%_50%_50%_0%] rotate-[315deg]`}
           style={{
-            backgroundColor: `${(playerData.m_team == localTeam && playerColors[playerData.m_color]) || (settings.showOnlyEnemies && playerData.m_team != localTeam && playerColors[playerData.m_color]) || `red`}`,
+            backgroundColor: `${playerData.m_color==5?(playerData.m_team==teamEnum.counterTerrorist?(playerColors[0]):(playerColors[2])):((playerData.m_team == localTeam && playerColors[playerData.m_color]) || (settings.showOnlyEnemies && playerData.m_team != localTeam && playerColors[playerData.m_color]) || `red`)}`,
             opacity: `${(playerData.m_is_dead && `0.8`) || (invalidPosition && `0`) || `1`}`,
             border: `${(playerData.m_team != localTeam && `1.5px solid white`) || `none`}`,
           }}

@@ -96,6 +96,7 @@ void f::get_player_info()
 					continue;
 				}
 
+				m_grenade_data["m_idx"] = idx;
 				m_data["m_grenades"]["landed"].push_back(m_grenade_data);
 				break;
 
@@ -105,6 +106,7 @@ void f::get_player_info()
 				if (!f::grenades::get_molo(reinterpret_cast<c_molo_grenade*>(entity)))
 					continue;
 
+				m_grenade_data["m_idx"] = idx;
 				m_data["m_grenades"]["landed"].push_back(m_grenade_data);
 				break;
 

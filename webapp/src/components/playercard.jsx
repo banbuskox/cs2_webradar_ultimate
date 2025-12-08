@@ -22,39 +22,27 @@ const PlayerCard = ({ playerData, isOnRightSide, settings }) => {
 
   return (
     <li
-      style={{ opacity: `${(playerData.m_is_dead && `0.5`) || `1`}` }}
-      className={`flex ${isOnRightSide && `flex-row-reverse`}`}
+      style={{ opacity: `${(playerData.m_is_dead && `0.4`) || `1`}` }}
+      className={`flex ${isOnRightSide && (`flex-row-reverse`)} hover:cursor-pointer hover:bg-radar-secondary/20 transition-colors py-1 px-1 rounded-[30px]`}
+      onClick={() =>
+        window.open(
+          `https://steamcommunity.com/profiles/${playerData.m_steam_id}`,
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }
     >
-      <div className="flex items-center mr-2">
+      <div className={`flex items-center ${isOnRightSide?(`ml-4`):(`mr-4`)}`}>
 
         <div
-          className={`flex flex-col gap-[0.375rem] justify-center items-center`}
+          className={`flex flex-col justify-center items-center`}
         >
-          <div
-            className={`hover:cursor-pointer`}
-            onClick={() =>
-              window.open(
-                `https://steamcommunity.com/profiles/${playerData.m_steam_id}`,
-                "_blank",
-                "noopener,noreferrer"
-              )
-            }
-          >
-            {playerData.m_name}
-          </div>
-          {/* <div
-            className={`w-0 h-0 border-solid border-t-[12px] border-r-[8px] border-b-[12px] border-l-[8px]`}
-            style={{
-              borderColor: `${
-                playerColors[playerData.m_color]
-              } transparent transparent transparent`,
-            }}
-          ></div> */}
+          {playerData.m_name}
           <div className="flex">
           <img
-            className={`h-[8rem] ${isOnRightSide && `scale-x-[-1]`}`}
+            className={`h-[8rem] rounded-[30px] ${isOnRightSide && `scale-x-[-1]`}`}
             src={`./assets/characters/${modelName}.png`}
-            style={{backgroundColor:playerColors[playerData.m_color], borderRadius:'30px'}}
+            style={{backgroundColor:`${playerData.m_color>4?(isOnRightSide?playerColors[0]:playerColors[2]):playerColors[playerData.m_color]}`}}
           ></img>
           <img
             className={`h-[8rem] absolute ${isOnRightSide && `scale-x-[-1]`}`}
@@ -89,11 +77,15 @@ const PlayerCard = ({ playerData, isOnRightSide, settings }) => {
               height={16}
               color={`${colorSchemePallette[settings.colorScheme][1]}`}
             />
-            <div className="w-20 h-4 bg-neutral-700 rounded-sm border border-black/50 overflow-hidden">
+            <div className="w-20 h-4 bg-neutral-700 overflow-hidden rounded-[5px] relative">
               <div
-                className={`h-full transition-all duration-600`}
+                className={`h-full rounded-[5px] absolute`}
+                style={{ width: `${playerData.m_health}%`, backgroundColor: `rgb(170,0,0)`,transition: `width 200ms ease-in-out`, transitionDelay: `2s`}}
+              />
+              <div
+                className={`h-full transition-all rounded-[5px] absolute`}
                 style={{ width: `${playerData.m_health}%`, backgroundColor: colorSchemePallette[settings.colorScheme][1] }}
-              ></div>
+              />
             </div>
             <span className="text-radar-primary">{playerData.m_health}</span>
           </div>

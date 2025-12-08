@@ -23,6 +23,7 @@ const GrenadeEffects = ({ grenadeData, type, mapData, settings, averageLatency, 
     return (
         <div 
         ref={grenRef}
+        key={grenadeData.m_idx}
         className={`absolute rounded-[100%] left-0 top-0`}
         style={{
           width: `${smokeSize}vw`,
