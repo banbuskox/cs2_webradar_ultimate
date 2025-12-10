@@ -44,7 +44,7 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
   const [scaledSize, setScaledSize] = useState(settings.showOnlyEnemies? 0 : (0.7 * settings.dotSize));
 
   useEffect(() => {
-    if (window.innerHeight<=500) setScaledSize(0.7 * settings.dotSize+1.5); else setScaledSize(0.7 * settings.dotSize);
+    if (window.innerHeight<=500) setScaledSize(settings.showOnlyEnemies&&playerData.m_team === localTeam? 0 : (0.7 * settings.dotSize+1.5)); else setScaledSize(settings.showOnlyEnemies&&playerData.m_team === localTeam? 0 : (0.7 * settings.dotSize));
   }, [window.innerHeight, settings.dotSize])
 
   useEffect(() => {

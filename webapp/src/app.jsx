@@ -237,6 +237,26 @@ const App = () => {
                 ""
                 }`}</span>
             </div>
+            {(tempPlayer_ && !tempPlayer_.m_is_dead &&
+                  <div className={`flex justify-center`} style={{color: (() => {
+                    const ratio = tempPlayer_.m_bomb_damage / tempPlayer_.m_health;
+
+                    if (ratio >= 1.0) {
+                      return 'rgb(255, 0, 0)';
+                    } else if (ratio >= 0.5) {
+                      const decimal = (ratio - 0.5) * 2;
+                      return `rgb(255, ${Math.floor(255 * (1 - decimal))}, 0)`;
+                    } else {
+                      const decimal = ratio * 2;
+                      return `rgb(${Math.floor(255 * decimal)}, 255, 0)`;
+                    }
+                  })(),
+                  fontWeight: (() => {
+                    const ratio = tempPlayer_.m_bomb_damage / tempPlayer_.m_health;
+                    return ratio >= 1.0 ? `bold` : `normal`;
+                  })()
+                  }}>{`${tempPlayer_.m_bomb_damage<tempPlayer_.m_health?tempPlayer_.m_bomb_damage<7?`0 HP`:`-${tempPlayer_.m_bomb_damage} HP`:`⚠️ LETHAL ⚠️`}`}</div>
+                )}
           </div>
         )}
 

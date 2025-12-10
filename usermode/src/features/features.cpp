@@ -27,6 +27,11 @@ void f::get_map()
 		i::m_global_vars = m_memory->read_t<c_global_vars*>(m_memory->find_pattern(CLIENT_DLL, GET_GLOBAL_VARS)->rip().as<c_global_vars*>());
 	}
 
+	if (f::features_vars::map_name != map_name) {
+		f::bomb::update_bomb_dmg_info(map_name);
+		f::features_vars::map_name = map_name;
+	}
+
 	m_data["m_map"] = map_name;
 }
 

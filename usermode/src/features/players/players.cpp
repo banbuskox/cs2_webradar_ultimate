@@ -8,6 +8,7 @@ bool f::players::get_data(int32_t idx, c_cs_player_controller* player, c_cs_play
 	const auto team = player->m_iTeamNum();
 	const auto money_services = player->m_pInGameMoneyServices();
 	const auto item_services = player_pawn->m_pItemServices();
+	const auto player_armor = player_pawn->m_ArmorValue();
 
 	bool has_bomb = false;
 	if (team == e_team::t && !is_dead) {
@@ -24,7 +25,7 @@ bool f::players::get_data(int32_t idx, c_cs_player_controller* player, c_cs_play
 		{"m_model_name", player_pawn->get_model_name()},
 		{"m_steam_id", std::to_string(player->m_steamID())},
 		{"m_money", money_services ? money_services->m_iAccount() : 0},
-		{"m_armor", player_pawn->m_ArmorValue()},
+		{"m_armor", player_armor},
 		{"m_position", {
 			{"x", vec_origin.m_x},
 			{"y", vec_origin.m_y},
@@ -35,7 +36,8 @@ bool f::players::get_data(int32_t idx, c_cs_player_controller* player, c_cs_play
 		{"m_has_defuser", item_services ? item_services->m_bHasDefuser() : false},
 		{"m_weapons", nlohmann::json{}},
 		{"m_flashed", player_pawn->m_flFlashOverlayAlpha()},
-		{"m_has_bomb", has_bomb}
+		{"m_has_bomb", has_bomb},
+		{"m_bomb_damage", f::bomb::calculate_bomb_damage(&vec_origin, &player_armor)}
 	};
 
 	return true;

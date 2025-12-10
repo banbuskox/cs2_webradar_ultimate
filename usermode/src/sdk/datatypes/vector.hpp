@@ -25,5 +25,13 @@ struct f_vector
 	{
 		return (m_x == 0.f && m_y == 0.f && m_z == 0.f);
 	}
+
+	float dist_to(const f_vector& other) const
+	{
+		const float dist_x = m_x - other.m_x;
+		const float dist_y = m_y - other.m_y;
+		const float dist_z = m_z - other.m_z;
+		return std::sqrt(dist_x*dist_x + dist_y*dist_y + dist_z*dist_z);
+	}
 };
 static_assert(sizeof(f_vector) == 0x0c, "wrong size on f_vector");

@@ -64,3 +64,17 @@ select option {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 146, 180, 0.8);
 }
+
+@keyframes alertAnimation {
+  0% {filter: drop-shadow(0px 0px 0px none);}
+  50% {filter: drop-shadow(0px 0px 20px red);}
+  100% {filter: drop-shadow(0px 0px 0px none);}
+}
+
+.alertAnim {
+  background-color: none;
+  animation-name: alertAnimation;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}

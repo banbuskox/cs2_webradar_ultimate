@@ -2,6 +2,7 @@
 
 namespace hashes
 {
+	//entities
 	const auto PLAYER_CONTROLLER = fnv1a::hash_const("CCSPlayerController");
 	const auto C4 = fnv1a::hash_const("C_C4");
 	const auto PLANTED_C4 = fnv1a::hash_const("C_PlantedC4");
@@ -11,6 +12,26 @@ namespace hashes
 	const auto FLASH = fnv1a::hash_const("C_FlashbangProjectile");
 	const auto DECOY = fnv1a::hash_const("C_DecoyProjectile");
 	const auto MOLOTOV = fnv1a::hash_const("C_MolotovProjectile");
+
+	//maps
+	const auto DE_DUST2 = fnv1a::hash_const("de_dust2");
+	const auto DE_ANCIENT = fnv1a::hash_const("de_ancient");
+	const auto DE_ANUBIS = fnv1a::hash_const("de_anubis");
+	const auto DE_INFERNO = fnv1a::hash_const("de_inferno");
+	const auto DE_MIRAGE = fnv1a::hash_const("de_mirage");
+	const auto DE_NUKE = fnv1a::hash_const("de_nuke");
+	const auto DE_OVERPASS = fnv1a::hash_const("de_overpass");
+	const auto DE_VERTIGO = fnv1a::hash_const("de_vertigo");
+	const auto DE_TRAIN = fnv1a::hash_const("de_train");
+}
+
+namespace f::features_vars
+{
+	inline std::string map_name = "";
+	inline int bomb_dmg = 0;
+	inline int bomb_radius = 0;
+	inline f_vector bomb_vec;
+	inline float bomb_blow_time = 0.f;
 }
 
 namespace f::players
@@ -24,6 +45,8 @@ namespace f::bomb
 {
 	void get_carried_bomb(c_base_entity* bomb);
 	void get_planted_bomb(c_planted_c4* planted_c4);
+	int calculate_bomb_damage(const f_vector* playerVec, const int32_t* playerArmor);
+	void update_bomb_dmg_info(std::string map);
 }
 
 namespace f::dropped_weapons
