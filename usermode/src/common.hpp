@@ -50,10 +50,4 @@
             fclose(log); \
         } \
     }
-
-#define SLEEP(sec) \
-    { \
-        auto wait_to = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) + sec; \
-        while (wait_to >= std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())) {}; \
-    }
     

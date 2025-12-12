@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33516.290
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11304.174 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "usermode", "usermode.vcxproj", "{6A55EA2E-776D-410E-B7F1-DEA56E9BDFCD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Process Hollowing", "PH\Process Hollowing\Process Hollowing.vcxproj", "{FD861FD7-AD32-49C5-A426-C171CC0615EC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A55EA2E-776D-410E-B7F1-DEA56E9BDFCD} = {6A55EA2E-776D-410E-B7F1-DEA56E9BDFCD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,6 +17,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6A55EA2E-776D-410E-B7F1-DEA56E9BDFCD}.release|x64.ActiveCfg = release|x64
 		{6A55EA2E-776D-410E-B7F1-DEA56E9BDFCD}.release|x64.Build.0 = release|x64
+		{FD861FD7-AD32-49C5-A426-C171CC0615EC}.release|x64.ActiveCfg = Release|x64
+		{FD861FD7-AD32-49C5-A426-C171CC0615EC}.release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
