@@ -18,14 +18,6 @@ typedef struct IMAGE_RELOCATION_ENTRY {
 	WORD Type : 4;
 } IMAGE_RELOCATION_ENTRY, *PIMAGE_RELOCATION_ENTRY;
 
-void XorDecrypt(LPVOID lpData, DWORD dwSize, BYTE key)
-{
-	BYTE* pBytes = (BYTE*)lpData;
-	for (DWORD i = 0; i < dwSize; i++)
-	{
-		pBytes[i] ^= key;
-	}
-}
 
 LPVOID GetResourcePayload(int resourceID, DWORD* outSize) {
 	HRSRC hRes = FindResource(NULL, MAKEINTRESOURCE(resourceID), RT_RCDATA);
@@ -313,8 +305,6 @@ int main()
 	}
 
 	memcpy(hFileContent, pRawResource, payloadSize);
-
-	XorDecrypt(hFileContent, payloadSize, 0x55);
 
 	const BOOL bPE = IsValidPE(hFileContent);
 	if (!bPE)

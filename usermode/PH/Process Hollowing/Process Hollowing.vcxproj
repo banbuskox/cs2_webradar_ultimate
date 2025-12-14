@@ -53,7 +53,7 @@
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
     </Link>
     <PreBuildEvent>
-      <Command>powershell -Command "$b=[System.IO.File]::ReadAllBytes('$(SolutionDir)$(Configuration)\usermode.exe'); for($i=0; $i -lt $b.Length; $i++) { $b[$i] = $b[$i] -bxor 0x55 }; [System.IO.File]::WriteAllBytes('$(ProjectDir)usermode.bin', $b)"; del "$(SolutionDir)$(Configuration)\usermode.exe"</Command>
+      <Command>move "$(SolutionDir)$(Configuration)\usermode.exe" "$(ProjectDir)usermode.bin"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>del "$(ProjectDir)usermode.bin"</Command>
