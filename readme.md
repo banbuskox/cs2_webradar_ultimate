@@ -1,7 +1,7 @@
 # cs2_webradar
 
-undetected Counter Strike 2 browser based radar cheat <br>
-if you have any suggestions, issues or questions, feel free to send them in "issues" tab
+Undetected Counter Strike 2 browser based radar cheat <br>
+If you have any suggestions, issues or questions, feel free to send them in "issues" tab.
 
 
 ## requirements
