@@ -64,7 +64,7 @@ const PlayerSelectionModal = ({ players, onSelect, localTeam }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center z-[100]">
             <div className="bg-gray-800 p-8 rounded-lg shadow-2xl w-96 max-w-[90vw] border border-gray-700">
                 <h2 className="text-xl font-bold text-white mb-4">Select Yourself</h2>
-                <p className="text-sm text-gray-400 mb-6">This is used to show you different map levels. <br></br> Please choose <b>YOURSELF</b>!</p>
+                <p className="text-sm text-gray-400 mb-6">This is used for some features. <br></br> Please choose <b>YOURSELF</b>!</p>
                 <ul className="max-h-60 overflow-y-auto pr-2 space-y-2">
                     {players
                     .filter(player => player.m_steam_id !== "0")
@@ -180,12 +180,18 @@ const App = () => {
 
         const map = parsedData.m_map;
         if (map !== "invalid") {
-          setPlayerArray(parsedData.m_players);
-          setMapData({
-            ...(await (await fetch(`data/${map}/data.json`)).json()),
-            name: map,
-          });
-          document.body.style.backgroundImage = `url(./data/${map}/background.png)`;
+          if ((await fetch(`data/${map}/data.json`)).status == 200) {
+            setPlayerArray(parsedData.m_players);
+            setMapData({
+              ...(await (await fetch(`data/${map}/data.json`)).json()),
+              name: map,
+            }); 
+            document.body.style.backgroundImage = `url(./data/${map}/background.png)`;
+          } else {
+            setMapData({ name: "unsupported" });
+            setPlayerArray([]);
+            document.body.style.backgroundImage = `url(./data/de_mirage/background.png)`;
+          }
         } else {
           setMapData({ name: "invalid" });
           setPlayerArray([]);
@@ -280,7 +286,7 @@ const App = () => {
               )))}
           </ul>
 
-          {(playerArray && playerArray.length > 0 && mapData && mapData.name !== "invalid" && settings.whichPlayerAreYou && (
+          {(playerArray && playerArray.length > 0 && mapData && mapData.name !== "invalid" && mapData.name !== "unsupported" && settings.whichPlayerAreYou && (
             <div style={{transform: "scale(1)"}}>
               <Radar
                 playerArray={playerArray}
@@ -294,6 +300,12 @@ const App = () => {
                 droppedWeaponsData={droppedWeaponsData}
                 tempPlayer={tempPlayer_}
               />
+            </div>
+          )) || (mapData && mapData.name === "unsupported" && (
+            <div id="radar" className={`relative overflow-hidden origin-center`}>
+              <h1 className="radar_message">
+                Current map is unsupported.
+              </h1>
             </div>
           )) || (
               <div id="radar" className={`relative overflow-hidden origin-center`}>
