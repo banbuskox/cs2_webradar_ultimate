@@ -67,14 +67,14 @@ bool utils::is_updated()
     {
         const auto json_response = nlohmann::json::parse(read_buffer);
 
-        const auto& latest_release_name = json_response["name"].get<std::string>();
         const auto& latest_tag_name = json_response["tag_name"].get<std::string>();
-        if (latest_release_name != CS2_WEBRADAR_VERSION)
+        const auto& html_url = json_response["html_url"].get<std::string>();
+        if (latest_tag_name != CS2_WEBRADAR_VERSION)
         {
-            const auto output = std::format("Version mismatch!\nLatest version: '{}'\nInstalled version: '{}'\nPlease download the latest version (link will open automatically).", latest_release_name.c_str(), CS2_WEBRADAR_VERSION);
+            const auto output = std::format("Version mismatch!\nLatest version: '{}'\nInstalled version: '{}'\nPlease download the latest version (link will open automatically).", latest_tag_name, CS2_WEBRADAR_VERSION);
             LOG_WARNING("%s", output.c_str());
             MessageBoxA(nullptr, output.c_str(), "Usermode " CS2_WEBRADAR_VERSION, MB_OK);
-            ShellExecute(0, 0, (std::format("https://github.com/banbuskox/cs2_webradar_ultimate/releases/tag/{}", latest_tag_name)).c_str(), 0, 0, SW_SHOW);
+            ShellExecute(0, 0, html_url.c_str(), 0, 0, SW_SHOW);
             return {};
         }
     }
