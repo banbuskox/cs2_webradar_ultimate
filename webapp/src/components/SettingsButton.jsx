@@ -15,7 +15,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
 
   return (
     <div className="z-50" ref={settingsBut}>
-      {window.innerHeight>500 && (
+      {window.innerHeight>600 && (
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1 transition-all rounded-xl"
@@ -30,6 +30,25 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
           <h3 className="text-radar-primary text-lg font-semibold mb-4">Radar Settings</h3>
 
           <div className="space-y-3 overflow-y-auto max-h-[715px] h-screen pr-2">
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-radar-secondary text-sm">Map Brightness</span>
+                <span className="text-radar-primary text-sm font-mono">{settings.mapBrightness||100}%</span>
+              </div>
+              <input
+                type="range"
+                min="10"
+                max="195"
+                step="5"
+                value={settings.mapBrightness||100}
+                onChange={(e) => onSettingsChange({ ...settings, mapBrightness: parseFloat(e.target.value) })}
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-radar-primary"
+                style={{
+                  background: `linear-gradient(to right, #b1d0e7 ${(((settings.mapBrightness||100) - 10) / 190) * 100}%, rgba(59, 130, 246, 0.2) ${(((settings.mapBrightness||100) - 10) / 190) * 100}%)`
+                }}
+              />
+            </div>
+
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-radar-secondary text-sm">Player Dot Size</span>
@@ -69,7 +88,18 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
             </div>
             
             <div className="space-y-1">
-                <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary_default/20 transition-colors cursor-pointer">
+
+              <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary_default/20 transition-colors cursor-pointer">
+                <span className="text-radar-secondary text-sm">Increase Player Contrast</span>
+                <input
+                  type="checkbox"
+                  checked={settings.increaseContrast}
+                  onChange={(e) => onSettingsChange({ ...settings, increaseContrast: e.target.checked })}
+                  className="relative h-5 w-9 rounded-full shadow-sm bg-radar-secondary/30 checked:bg-radar-secondary transition-colors duration-200 appearance-none before:absolute before:h-4 before:w-4 before:top-0.5 before:left-0.5 before:bg-white before:rounded-full before:transition-transform before:duration-200 checked:before:translate-x-4"
+                />
+              </label>
+
+              <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary_default/20 transition-colors cursor-pointer">
                 <span className="text-radar-secondary text-sm">Show Only Enemies</span>
                 <input
                   type="checkbox"

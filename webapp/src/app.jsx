@@ -48,6 +48,8 @@ const DEFAULT_SETTINGS = {
   thrownGrenadeSize: 0.5,
   thrownGrenadeColor: "#FF0000",
   whichPlayerAreYou: "0",
+  mapBrightness: 100,
+  increaseContrast: false,
   colorScheme: "default",
   settings_version: "1.0"
 };

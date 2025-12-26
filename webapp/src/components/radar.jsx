@@ -35,7 +35,7 @@ const Radar = ({
       avrPing={averageLatency}
       radarContentRef={radarContentRef.current}
       >
-        <img onWheelCapture={onScroll} ref={radarImageRef} className={`w-full h-auto rounded-[20px] ${bombData && bombData.m_blow_time <= 10 && tempPlayer.m_bomb_damage>=tempPlayer.m_health?`alertAnim`:``}`} src={radarImage} draggable={false} style={{scale: `${radarScale}`, transition: "scale 150ms linear"}}/>
+        <img onWheelCapture={onScroll} ref={radarImageRef} className={`w-full h-auto rounded-[20px] ${bombData && bombData.m_blow_time <= 10 && tempPlayer && !tempPlayer.m_is_dead && tempPlayer.m_bomb_damage>=tempPlayer.m_health?`alertAnim`:``}`} src={radarImage} draggable={false} style={{scale: `${radarScale}`, transition: "scale 150ms linear", filter: `contrast(${200-settings.mapBrightness||100}%)`}}/>
       </Draggable>
 
       {playerArray && playerArray!=null && playerArray.map((player) => (
