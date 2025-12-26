@@ -1,7 +1,5 @@
 # cs2_网页雷达
 未检测到的 Counter Strike 2 基于浏览器的雷达作弊<br>
-<br>
-如果您有任何建议、问题或疑问，请随时将它们发送到 [Discord 服务器](https://discord.gg/wVzuHN8uXd)上
 
 ## 用法
 - 下载并安装 [nodejs](https://nodejs.org/en/download/current/)

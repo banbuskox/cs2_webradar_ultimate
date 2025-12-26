@@ -1,12 +1,14 @@
 # cs2_webradar
 
 Undetected Counter Strike 2 browser based radar cheat <br>
-If you have any suggestions, issues or questions, feel free to send them in "issues" tab.
+If you have any suggestions, issues or questions, feel free to join my [Discord](https://discord.gg/AnQeMAP6tR) server or create new issue in "issues" tab.
+
+Credits: [Claudv](https://github.com/clauadv) - Thanks for creating the base
 
 
 ## requirements
-- [nodejs](https://nodejs.org/en/download/current)
-- [visual studio ide](https://visualstudio.microsoft.com/vs/community/)
+- [NodeJS](https://nodejs.org/en/download/current)
+- [Visual Studio IDE](https://visualstudio.microsoft.com/vs/community/)
 
 ## usage
 - in the root folder, run `install.bat` to install dependencies
@@ -30,6 +32,6 @@ https://github.com/clauadv/cs2_webradar/assets/26169415/718d5969-004b-4300-b152-
 this project is licensed under the [GPL-3.0 license](https://github.com/clauadv/cs2_webradar?tab=GPL-3.0-1-ov-file#readme)
 
 ## contributors
-<a href="https://github.com/clauadv/cs2_webradar/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=clauadv/cs2_webradar" />
+<a href="https://github.com/banbuskox/cs2_webradar_ultimate/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=banbuskox/cs2_webradar_ultimate" />
 </a>

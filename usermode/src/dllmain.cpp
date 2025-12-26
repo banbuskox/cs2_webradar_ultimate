@@ -47,7 +47,7 @@ DWORD WINAPI AppLogic(LPVOID) {
     bool waitingLog = true;
     do {
         memStatus = m_memory->setup();
-        if (memStatus == 1) { LogMessage("Anti-cheat detected. Close it.", 3); return 0; }
+        if (memStatus == 1) { LogMessage("Anti-cheat detected. Disable it.", 3); return 0; }
         if (memStatus == 3) { LogMessage("Memory init failed.", 3); return 0; }
         if (memStatus == 2) {
             if (waitingLog) {
