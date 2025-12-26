@@ -26,7 +26,7 @@ Credits: [Claudv](https://github.com/clauadv) - Thanks for creating the base
 - now your friends can see the radar by navigating to `your public ip:5173`
 
 ## showcase
-https://github.com/clauadv/cs2_webradar/assets/26169415/718d5969-004b-4300-b152-2051a75d490d
+https://github.com/user-attachments/assets/e2ea828c-96bf-4ba2-a45b-2f0320865256
 
 ## license
 this project is licensed under the [GPL-3.0 license](https://github.com/clauadv/cs2_webradar?tab=GPL-3.0-1-ov-file#readme)
