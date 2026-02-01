@@ -1,0 +1,53 @@
+{
+    "choosing_yourself": {
+        "main": "选择自己",
+        "explanation": "这是为了更好的使用雷达.",
+        "warning": "请一定选择 <b>你自己</b>!"
+    },
+    "settings": {
+        "button": "设置",
+        "title": "雷达设置",
+        "map_brightness": "地图亮度",
+        "player_dot_size": "玩家大小",
+        "bomb_size": "炸弹大小",
+        "increase_player_contrast": "提高玩家对比度",
+        "show_only_enemies": "只看敌人",
+        "enemy_names": "敌人名称",
+        "ally_names": "全体名称",
+        "follow_yourself": "跟随自己",
+        "follow_yourself_rotation": "跟随旋转",
+        "view_player_cones": "玩家视线",
+        "show_grenades": "展示投掷物",
+        "show_grenades_color": "投掷物颜色",
+        "show_greandes_size": "投掷物大小",
+        "show_dropped_weapons": "显示掉落武器",
+        "show_dropped_weapons_lighter": "高亮显示",
+        "show_dropped_weapons_ignore_grenades": "忽略投掷物",
+        "show_dropped_weapons_size": "武器大小",
+        "language": "语言",
+        "theme_color_text": "主题",
+        "theme_colors": {
+            "default": "默认",
+            "white": "白色",
+            "light_blue": "亮蓝",
+            "dark_blue": "暗蓝",
+            "purple": "紫色",
+            "red": "红色",
+            "orange": "橙色",
+            "yellow": "黄色",
+            "green": "绿色",
+            "light_green": "亮绿",
+            "pink": "粉色"
+        },
+        "choose_yourself_again_button": "选择自己"
+    },
+    "bomb_timer": {
+        "lethal": "致命"
+    },
+    "radar_messages": {
+        "public_ip_not_set": ["需要公有地址，已经探测到的地址 (", ") 是私有或本地地址"],
+        "websocket_connection_failed": ["连接到 '", "' 失败，请检查你的ip地址."],
+        "unsupported_map": "该地图不支持.",
+        "connected": "已连接，等待您加入游戏！."
+    }
+}

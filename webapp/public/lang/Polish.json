@@ -1,0 +1,53 @@
+{
+    "choosing_yourself": {
+        "main": "Wybierz Siebie",
+        "explanation": "Jest to używanie do niektórych funkcji.",
+        "warning": "Proszę wybrać <b>SIEBIE</b>!"
+    },
+    "settings": {
+        "button": "Ustawienia",
+        "title": "Ustawienia Radara",
+        "map_brightness": "Jasność Mapy",
+        "player_dot_size": "Rozmiar Kropki Gracza",
+        "bomb_size": "Rozmiar Bomby",
+        "increase_player_contrast": "Zwiększ Kontrast Graczy",
+        "show_only_enemies": "Pokazuj Tylko Wrogów",
+        "enemy_names": "Nazwy Wrogów",
+        "ally_names": "Nazwy Sojuszników",
+        "follow_yourself": "Podążaj Za Sobą",
+        "follow_yourself_rotation": "Uwzględnij Obrót",
+        "view_player_cones": "Pole Widzenia Graczy",
+        "show_grenades": "Pokazuj Granaty",
+        "show_grenades_color": "Kolor Granatów",
+        "show_greandes_size": "Rozmiar Granatów",
+        "show_dropped_weapons": "Pokazuj Upuszczone Bronie",
+        "show_dropped_weapons_lighter": "Użyj Jaśniejszego Koloru",
+        "show_dropped_weapons_ignore_grenades": "Ignoruj Granaty",
+        "show_dropped_weapons_size": "Rozmiar Broni",
+        "language": "Język",
+        "theme_color_text": "Kolor Motywu",
+        "theme_colors": {
+            "default": "Domyślny",
+            "white": "Biały",
+            "light_blue": "Jasno-niebieski",
+            "dark_blue": "Ciemno-niebieski",
+            "purple": "Fioletowy",
+            "red": "Czerwony",
+            "orange": "Pomarańczowy",
+            "yellow": "Żółty",
+            "green": "Zielony",
+            "light_green": "Jasno-zielony",
+            "pink": "Różowy"
+        },
+        "choose_yourself_again_button": "Wybierz Siebie Ponownie"
+    },
+    "bomb_timer": {
+        "lethal": "ŚMIERTELNE"
+    },
+    "radar_messages": {
+        "public_ip_not_set": ["Publiczne IP jest wymagane! Wykryte IP (", ") jest prywatnym/lokalnym IP"],
+        "websocket_connection_failed": ["Połączenie WebSocket z '", "' nie powiodło się. Sprawdź adres IP i spróbuj ponownie."],
+        "unsupported_map": "Mapa nie jest obsługiwana.",
+        "connected": "Połączono! Poczekaj, aż host dołączy do meczu."
+    }
+}

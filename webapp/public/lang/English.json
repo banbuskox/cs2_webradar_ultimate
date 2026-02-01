@@ -1,0 +1,53 @@
+{
+    "choosing_yourself": {
+        "main": "Select Yourself",
+        "explanation": "This is used for some features.",
+        "warning": "Please choose <b>YOURSELF</b>!"
+    },
+    "settings": {
+        "button": "Settings",
+        "title": "Radar Settings",
+        "map_brightness": "Map Brightness",
+        "player_dot_size": "Player Dot Size",
+        "bomb_size": "Bomb Size",
+        "increase_player_contrast": "Increase Player Contrast",
+        "show_only_enemies": "Show Only Enemies",
+        "enemy_names": "Enemy Names",
+        "ally_names": "Ally Names",
+        "follow_yourself": "Follow Yourself",
+        "follow_yourself_rotation": "Follow Rotation",
+        "view_player_cones": "View Player Cones",
+        "show_grenades": "Show Grenades",
+        "show_grenades_color": "Grenade Color",
+        "show_greandes_size": "Grenade Size",
+        "show_dropped_weapons": "Show Dropped Weapons",
+        "show_dropped_weapons_lighter": "Use Lighter Color",
+        "show_dropped_weapons_ignore_grenades": "Ignore Grenades",
+        "show_dropped_weapons_size": "Weapon Size",
+        "language": "Language",
+        "theme_color_text": "Theme Color",
+        "theme_colors": {
+            "default": "Default",
+            "white": "White",
+            "light_blue": "Light Blue",
+            "dark_blue": "Dark Blue",
+            "purple": "Purple",
+            "red": "Red",
+            "orange": "Orange",
+            "yellow": "Yellow",
+            "green": "Green",
+            "light_green": "Light Green",
+            "pink": "Pink"
+        },
+        "choose_yourself_again_button": "Choose Yourself Again"
+    },
+    "bomb_timer": {
+        "lethal": "LETHAL"
+    },
+    "radar_messages": {
+        "public_ip_not_set": ["A public IP address is required! Currently detected IP (", ") is a private/local IP"],
+        "websocket_connection_failed": ["WebSocket connection to '", "' failed. Please check the IP address and try again."],
+        "unsupported_map": "Current map is unsupported.",
+        "connected": "Connected! Please wait for the host to join match."
+    }
+}
