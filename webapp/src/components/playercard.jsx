@@ -40,7 +40,7 @@ const PlayerCard = ({ playerData, isOnRightSide, settings }) => {
           {playerData.m_name}
           <div className="flex">
           <img
-            className={`h-[8rem] rounded-[30px] ${isOnRightSide && `scale-x-[-1]`}`}
+            className={`h-[8rem] w-full min-w-[10rem] rounded-[30px] ${isOnRightSide && `scale-x-[-1]`}`}
             src={`./assets/characters/${modelName}.png`}
             style={{backgroundColor:`${playerData.m_color>4?(isOnRightSide?playerColors[0]:playerColors[2]):playerColors[playerData.m_color]}`}}
           ></img>

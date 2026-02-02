@@ -35,6 +35,7 @@ bool f::players::get_data(int32_t idx, c_cs_player_controller* player, c_cs_play
 		{"m_has_helmet", item_services ? item_services->m_bHasHelmet() : false},
 		{"m_has_defuser", item_services ? item_services->m_bHasDefuser() : false},
 		{"m_weapons", nlohmann::json{}},
+		{"m_is_scoped", player_pawn->m_bIsScoped()},
 		{"m_flashed", player_pawn->m_flFlashOverlayAlpha()},
 		{"m_has_bomb", has_bomb},
 		{"m_bomb_damage", f::bomb::calculate_bomb_damage(&vec_origin, &player_armor)}

@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-const SettingsButton = ({ settings, onSettingsChange }) => {
+const SettingsButton = ({ settings, onSettingsChange, translation, languageOptions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const settingsMenu = useRef(null);
   const settingsBut = useRef(null);
@@ -21,18 +21,18 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
         className="flex items-center gap-1 transition-all rounded-xl"
       >
         <img className={`w-[1.3rem]`} src={`./assets/icons/cog.svg`} />
-        <span className="text-radar-primary">Settings</span>
+        <span className="text-radar-primary">{translation.settings.button}</span>
       </button>
       )}
 
       {isOpen && (
         <div className="absolute right-0 mt-2 bg-black bg-opacity-80 w-80 backdrop-blur-lg rounded-xl p-4 pr-2 shadow-xl border border-radar-secondary/20" ref={settingsMenu}>
-          <h3 className="text-radar-primary text-lg font-semibold mb-4">Radar Settings</h3>
+          <h3 className="text-radar-primary text-lg font-semibold mb-4">{translation.settings.title}</h3>
 
           <div className="space-y-3 overflow-y-auto max-h-[715px] h-screen pr-2">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-radar-secondary text-sm">Map Brightness</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.map_brightness}</span>
                 <span className="text-radar-primary text-sm font-mono">{settings.mapBrightness||100}%</span>
               </div>
               <input
@@ -51,7 +51,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-radar-secondary text-sm">Player Dot Size</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.player_dot_size}</span>
                 <span className="text-radar-primary text-sm font-mono">{settings.dotSize}x</span>
               </div>
               <input
@@ -70,7 +70,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-radar-secondary text-sm">Bomb Size</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.bomb_size}</span>
                 <span className="text-radar-primary text-sm font-mono">{settings.bombSize}x</span>
               </div>
               <input
@@ -90,7 +90,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
             <div className="space-y-1">
 
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary_default/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">Increase Player Contrast</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.increase_player_contrast}</span>
                 <input
                   type="checkbox"
                   checked={settings.increaseContrast}
@@ -100,7 +100,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
               </label>
 
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary_default/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">Show Only Enemies</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.show_only_enemies}</span>
                 <input
                   type="checkbox"
                   checked={settings.showOnlyEnemies}
@@ -110,7 +110,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
               </label>
 
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">Enemy Names</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.enemy_names}</span>
                 <input
                   type="checkbox"
                   checked={settings.showEnemyNames}
@@ -121,7 +121,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
 
               {(!settings.showOnlyEnemies) && (
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">Ally Names</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.ally_names}</span>
                 <input
                   type="checkbox"
                   checked={settings.showAllNames}
@@ -132,7 +132,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
               )}
 
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">Follow Yourself</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.follow_yourself}</span>
                 <input
                   type="checkbox"
                   checked={settings.followYourself}
@@ -143,7 +143,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
 
               { settings.followYourself && (
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">ㅤㅤ↑ Follow Rotation</span>
+                <span className="text-radar-secondary text-sm">ㅤㅤ↑ {translation.settings.follow_yourself_rotation}</span>
                 <input
                   type="checkbox"
                   checked={settings.followYourselfRotation}
@@ -154,7 +154,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
               )}
 
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">View Player Cones</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.view_player_cones}</span>
                 <input
                   type="checkbox"
                   checked={settings.showViewCones}
@@ -164,7 +164,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
               </label>
 
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">Show Grenades</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.show_grenades}</span>
                 <input
                   type="checkbox"
                   checked={settings.showGrenades}
@@ -177,7 +177,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
                 <div>
 
                   <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                  <span className="text-radar-secondary text-sm">ㅤㅤ↑ Grenade Color</span>
+                  <span className="text-radar-secondary text-sm">ㅤㅤ↑ {translation.settings.show_grenades_color}</span>
                   <input
                     type="color"
                     value={settings.thrownGrenadeColor}
@@ -187,7 +187,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
                   </label>
 
                   <div className="flex justify-between items-center mb-2 mt-1.5 space-y-2">
-                  <span className="text-radar-secondary text-sm">ㅤㅤㅤ↑ Grenade Size</span>
+                  <span className="text-radar-secondary text-sm">ㅤㅤㅤ↑ {translation.settings.show_greandes_size}</span>
                   <span className="text-radar-primary text-sm font-mono">{settings.thrownGrenadeSize}x</span>
                   </div>
                   <input
@@ -208,7 +208,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
               )}
 
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">Show Droppped Weapons</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.show_dropped_weapons}</span>
                 <input
                   type="checkbox"
                   checked={settings.showDroppedWeapons}
@@ -221,7 +221,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
               <div>
 
                 <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">ㅤㅤ↑ Use Lighter Color</span>
+                <span className="text-radar-secondary text-sm">ㅤㅤ↑ {translation.settings.show_dropped_weapons_lighter}</span>
                 <input
                   type="checkbox"
                   checked={settings.droppedWeaponGlow}
@@ -231,7 +231,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
                 </label>
 
                 <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">ㅤㅤ↑ Ignore Grenades</span>
+                <span className="text-radar-secondary text-sm">ㅤㅤ↑ {translation.settings.show_dropped_weapons_ignore_grenades}</span>
                 <input
                   type="checkbox"
                   checked={settings.droppedWeaponIgnoreNade}
@@ -241,7 +241,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
                 </label>
 
                 <div className="flex justify-between items-center mb-2 mt-1.5 space-y-2">
-                  <span className="text-radar-secondary text-sm">ㅤㅤㅤ↑ Weapon Size</span>
+                  <span className="text-radar-secondary text-sm">ㅤㅤㅤ↑ {translation.settings.show_dropped_weapons_size}</span>
                   <span className="text-radar-primary text-sm font-mono">{settings.droppedWeaponSize}x</span>
                 </div>
                 <input
@@ -262,7 +262,7 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
               )}
 
               <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
-                <span className="text-radar-secondary text-sm">Theme Color</span>
+                <span className="text-radar-secondary text-sm">{translation.settings.theme_color_text}</span>
                 <select 
                   value={settings.colorScheme} 
                   onChange={(e) => onSettingsChange({ ...settings, colorScheme: e.target.value })} 
@@ -272,22 +272,41 @@ const SettingsButton = ({ settings, onSettingsChange }) => {
                   border: `none`
                   }}
                   >
-                  <option value="default">Default</option>
-                  <option value="white">White</option>
-                  <option value="light_blue">Light Blue</option>
-                  <option value="dark_blue">Dark Blue</option> 
-                  <option value="purple">Purple</option>
-                  <option value="red">Red</option>
-                  <option value="orange">Orange</option>
-                  <option value="yellow">Yellow</option>
-                  <option value="green">Green</option>
-                  <option value="light_green">Light Green</option>
-                  <option value="pink">Pink</option>
+                  <option value="default">{translation.settings.theme_colors.default}</option>
+                  <option value="white">{translation.settings.theme_colors.white}</option>
+                  <option value="light_blue">{translation.settings.theme_colors.light_blue}</option>
+                  <option value="dark_blue">{translation.settings.theme_colors.dark_blue}</option> 
+                  <option value="purple">{translation.settings.theme_colors.purple}</option>
+                  <option value="red">{translation.settings.theme_colors.red}</option>
+                  <option value="orange">{translation.settings.theme_colors.orange}</option>
+                  <option value="yellow">{translation.settings.theme_colors.yellow}</option>
+                  <option value="green">{translation.settings.theme_colors.green}</option>
+                  <option value="light_green">{translation.settings.theme_colors.light_green}</option>
+                  <option value="pink">{translation.settings.theme_colors.pink}</option>
+                </select>
+              </label>
+
+              <label className="flex items-center justify-between p-3 rounded-lg hover:bg-radar-secondary/20 transition-colors cursor-pointer">
+                <span className="text-radar-secondary text-sm">{translation.settings.language}</span>
+                <select 
+                  value={settings.language} 
+                  onChange={(e) => onSettingsChange({ ...settings, language: e.target.value })} 
+                  className="ml-2 bg-radar-panel text-radar-primary rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-radar-primary"
+                  style={{
+                  background: `rgba(59, 130, 246, 0.2)`,
+                  border: `none`
+                  }}
+                  >
+                    {languageOptions.map((langName) => (
+                      <option key={langName} value={langName}>
+                    {langName}
+          </option>
+        ))}
                 </select>
               </label>
 
               <button className="flex items-center justify-center p-3 bg-radar-redbutton rounded-lg hover:bg-radar-redbutton_hover transition-colors cursor-pointer w-full" onClick={(e) => onSettingsChange({ ...settings, whichPlayerAreYou: "0" })}>
-                  <span className="text-white text-sm">Choose Yourself Again</span>
+                  <span className="text-white text-sm">{translation.settings.choose_yourself_again_button}</span>
               </button>
             </div>
           </div>

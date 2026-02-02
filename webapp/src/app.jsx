@@ -1,5 +1,4 @@
-import ReactDOM from "react-dom/client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import "./App.css";
 import PlayerCard from "./components/playercard";
 import Radar from "./components/radar";
@@ -28,6 +27,7 @@ const PORT = 22006;
 
 
 let tempPlayer_ = null;
+let languageData = {"choosing_yourself":{"main":"Select Yourself","explanation":"This is used for some features.","warning":"Please choose <b>YOURSELF</b>!"},"settings":{"button":"Settings","title":"Radar Settings","map_brightness":"Map Brightness","player_dot_size":"Player Dot Size","bomb_size":"Bomb Size","increase_player_contrast":"Increase Player Contrast","show_only_enemies":"Show Only Enemies","enemy_names":"Enemy Names","ally_names":"Ally Names","follow_yourself":"Follow Yourself","follow_yourself_rotation":"Follow Rotation","view_player_cones":"View Player Cones","show_grenades":"Show Grenades","show_grenades_color":"Grenade Color","show_greandes_size":"Grenade Size","show_dropped_weapons":"Show Dropped Weapons","show_dropped_weapons_lighter":"Use Lighter Color","show_dropped_weapons_ignore_grenades":"Ignore Grenades","show_dropped_weapons_size":"Weapon Size","language":"Language","theme_color_text":"Theme Color","theme_colors":{"default":"Default","white":"White","light_blue":"Light Blue","dark_blue":"Dark Blue","purple":"Purple","red":"Red","orange":"Orange","yellow":"Yellow","green":"Green","light_green":"Light Green","pink":"Pink"},"choose_yourself_again_button":"Choose Yourself Again"},"bomb_timer":{"lethal":"LETHAL"},"radar_messages":{"public_ip_not_set":["A public IP address is required! Currently detected IP (",") is a private/local IP"],"websocket_connection_failed":["WebSocket connection to '","' failed. Please check the IP address and try again."],"unsupported_map":"Current map is unsupported.","connected":"Connected! Please wait for the host to join match."}}
 
 const EFFECTIVE_IP = USE_LOCALHOST ? "localhost" : PUBLIC_IP.match(/[a-zA-Z]/) ? window.location.hostname : PUBLIC_IP;
 
@@ -51,22 +51,49 @@ const DEFAULT_SETTINGS = {
   mapBrightness: 100,
   increaseContrast: false,
   colorScheme: "default",
-  settings_version: "1.0"
+  language: "English",
+  settings_version: "1.1"
 };
 
 const loadSettings = () => {
   const savedSettings = localStorage.getItem("radarSettings");
   let parsedSettings = JSON.parse(savedSettings);
+  loadLanguageFile(parsedSettings ? parsedSettings.language : DEFAULT_SETTINGS.language);
   return (savedSettings && parsedSettings.settings_version && parsedSettings.settings_version == DEFAULT_SETTINGS.settings_version) ? parsedSettings : DEFAULT_SETTINGS;
 };
 
-const PlayerSelectionModal = ({ players, onSelect, localTeam }) => {
-    players = players
+const loadLanguageFile = async (language) => {
+  await fetch(`/lang/${language}.json`).then((res) => res.text()).then((text) => languageData = JSON.parse(text))
+}
+
+const LanguageSelectionModal = ({ languages, onSelect }) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center z-[100]">
             <div className="bg-gray-800 p-8 rounded-lg shadow-2xl w-96 max-w-[90vw] border border-gray-700">
-                <h2 className="text-xl font-bold text-white mb-4">Select Yourself</h2>
-                <p className="text-sm text-gray-400 mb-6">This is used for some features. <br></br> Please choose <b>YOURSELF</b>!</p>
+                <h2 className="text-xl font-bold text-white mb-4">Select Language</h2>
+                <ul className="max-h-60 overflow-y-auto pr-2 space-y-2">
+                    {languages
+                    .map((lang) => (
+                        <li 
+                            key={lang} 
+                            onClick={() => onSelect(lang)}
+                            className="p-3 bg-gray-700 hover:bg-radar-blue text-white rounded-md cursor-pointer transition-all duration-200 flex justify-between items-center"
+                        >
+                            <span className="font-medium truncate">{lang}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+};
+
+const PlayerSelectionModal = ({ players, onSelect, localTeam, translation }) => {
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center z-[100]">
+            <div className="bg-gray-800 p-8 rounded-lg shadow-2xl w-96 max-w-[90vw] border border-gray-700">
+                <h2 className="text-xl font-bold text-white mb-4">{translation.choosing_yourself.main}</h2>
+                <p className="text-sm text-gray-400 mb-6">{translation.choosing_yourself.explanation} <br></br> <a dangerouslySetInnerHTML={{ __html: translation.choosing_yourself.warning }} /></p>
                 <ul className="max-h-60 overflow-y-auto pr-2 space-y-2">
                     {players
                     .filter(player => player.m_steam_id !== "0")
@@ -98,25 +125,58 @@ const App = () => {
   const [localTeam, setLocalTeam] = useState();
   const [bombData, setBombData] = useState();
   const [settings, setSettings] = useState(loadSettings());
+  const [translation, updateTranslation] = useState(languageData);
   const [showPlayerPrompt, setShowPlayerPrompt] = useState(false);
+  const [showLangPrompt, setShowLangPrompt] = useState(false);
+  const [radarScale, setRadarScale] = useState(1);
+
+  const radarZoom = (e) => {
+    const delta = e.deltaY * -0.001;
+    const newScale = radarScale + delta;
+    if (newScale>0.3&&newScale<4) setRadarScale(newScale)
+  };
+
+  const langFiles = import.meta.glob('/public/lang/*.json', { query: '?url', import: 'default' });
+  const languageOptions = useMemo(() => {
+    return Object.keys(langFiles).map((path) => {
+      const fileName = path.split('/').pop();
+      return fileName.replace('.json', '');
+    });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("radarSettings", JSON.stringify(settings));
   }, [settings]);
 
   useEffect(() => {
+    loadLanguageFile(settings.language).then(() => {
+      updateTranslation(languageData);
+    });
+  }, [settings.language]);
+
+  useEffect(() => {
       if (settings.whichPlayerAreYou === "0" && playerArray.length > 0 || settings.whichPlayerAreYou === undefined && playerArray.length > 0 ) {
-          setShowPlayerPrompt(true);
+          setShowLangPrompt(true);
       } else if (settings.whichPlayerAreYou !== "0" && settings.whichPlayerAreYou !== undefined) {
-          setShowPlayerPrompt(false);
+          setShowLangPrompt(false);
       }
     }, [playerArray, settings.whichPlayerAreYou]);
-    const handlePlayerSelect = (playerIdx) => {
+
+  const handlePlayerSelect = (playerIdx) => {
     setSettings((prevSettings) => ({
         ...prevSettings,
         whichPlayerAreYou: playerIdx,
     }));
     setShowPlayerPrompt(false);
+  };
+
+  const handleLangSelect = (lang) => {
+    setSettings((prevSettings) => ({
+        ...prevSettings,
+        language: lang,
+    }));
+    setShowLangPrompt(false);
+    setShowPlayerPrompt(true);
   };
 
   useEffect(() => {
@@ -128,7 +188,7 @@ const App = () => {
       if (PUBLIC_IP.startsWith("192.168")) {
         document.getElementsByClassName(
           "radar_message"
-        )[0].textContent = `A public IP address is required! Currently detected IP (${PUBLIC_IP}) is a private/local IP`;
+        )[0].textContent = `${translation.radar_messages.public_ip_not_set[0]}${PUBLIC_IP}${translation.radar_messages.public_ip_not_set[1]}`;
         return;
       }
 
@@ -167,7 +227,7 @@ const App = () => {
         clearTimeout(connectionTimeout);
         document.getElementsByClassName(
           "radar_message"
-        )[0].textContent = `WebSocket connection to '${webSocketURL}' failed. Please check the IP address and try again`;
+        )[0].textContent = `${translation.radar_messages.websocket_connection_failed[0]}${webSocketURL}${translation.radar_messages.websocket_connection_failed[1]}`;
         console.error(error);
       };
 
@@ -204,6 +264,10 @@ const App = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+  }, []);
   
   if (playerArray && playerArray.length > 0) {
     tempPlayer_ = playerArray.find((player) => player.m_steam_id === settings.whichPlayerAreYou);
@@ -216,11 +280,18 @@ const App = () => {
         backdropFilter: `blur(7.5px)`,
       }}
     >
+        {showLangPrompt && (
+            <LanguageSelectionModal
+                languages={languageOptions}
+                onSelect={handleLangSelect}
+            />
+        )}
         {showPlayerPrompt && playerArray.length > 0 && (
             <PlayerSelectionModal 
                 players={playerArray} 
                 onSelect={handlePlayerSelect} 
                 localTeam={localTeam}
+                translation={translation}
             />
         )}
 
@@ -263,7 +334,7 @@ const App = () => {
                     const ratio = tempPlayer_.m_bomb_damage / tempPlayer_.m_health;
                     return ratio >= 1.0 ? `bold` : `normal`;
                   })()
-                  }}>{`${tempPlayer_.m_bomb_damage<tempPlayer_.m_health?tempPlayer_.m_bomb_damage<7?`0 HP`:`-${tempPlayer_.m_bomb_damage} HP`:`⚠️ LETHAL ⚠️`}`}</div>
+                  }}>{`${tempPlayer_.m_bomb_damage<tempPlayer_.m_health?tempPlayer_.m_bomb_damage<7?`0 HP`:`-${tempPlayer_.m_bomb_damage} HP`:`⚠️ ${translation.bomb_timer.lethal} ⚠️`}`}</div>
                 )}
           </div>
         )}
@@ -273,9 +344,14 @@ const App = () => {
             value={averageLatency}
             settings={settings}
             setSettings={setSettings}
+            translation={translation}
+            languages={languageOptions}
           />
 
-          <ul id="terrorist" className="lg:flex hidden flex-col gap-1 m-0 p-0">
+          <ul 
+            id="terrorist" 
+            className="lg:flex hidden flex-col gap-1 m-0 p-0 w-[48vh]"
+          >
             {(playerArray && playerArray.length > 0 && playerArray
               .filter((player) => player.m_team == 2)
               .map((player) => (
@@ -289,37 +365,53 @@ const App = () => {
           </ul>
 
           {(playerArray && playerArray.length > 0 && mapData && mapData.name !== "invalid" && mapData.name !== "unsupported" && settings.whichPlayerAreYou && (
-            <div style={{transform: "scale(1)"}}>
-              <Radar
-                playerArray={playerArray}
-                radarImage={(tempPlayer_ && (mapData.leveling && tempPlayer_.m_position.z < mapData.level_change) ? `./data/${mapData.name}/radar_lower.png` : `./data/${mapData.name}/radar.png`)}
-                mapData={mapData}
-                localTeam={localTeam}
-                averageLatency={averageLatency}
-                bombData={bombData}
-                settings={settings}
-                grenadeData={grenadeData}
-                droppedWeaponsData={droppedWeaponsData}
-                tempPlayer={tempPlayer_}
-              />
+            <div className="flex flex-col items-center gap-2">
+              <div>
+                <Radar
+                  playerArray={playerArray}
+                  radarImage={(tempPlayer_ && (mapData.leveling && tempPlayer_.m_position.z < mapData.level_change) ? `./data/${mapData.name}/radar_lower.png` : `./data/${mapData.name}/radar.png`)}
+                  mapData={mapData}
+                  localTeam={localTeam}
+                  averageLatency={averageLatency}
+                  bombData={bombData}
+                  settings={settings}
+                  grenadeData={grenadeData}
+                  droppedWeaponsData={droppedWeaponsData}
+                  tempPlayer={tempPlayer_}
+                  radarZoom={radarZoom}
+                  radarScale={radarScale}
+                />
+              </div>
+              <input
+                  type="range"
+                  min="0.3"
+                  max="4"
+                  step="0.1"
+                  value={radarScale||1}
+                  onChange={(e) => { setRadarScale(parseFloat(e.target.value)) }}
+                  className="relative w-full h-2 rounded-lg appearance-none cursor-pointer accent-radar-primary"
+                  style={{
+                    background: `linear-gradient(to right, #b1d0e7 ${(((radarScale||1) - 0.3) / 3.7) * 100}%, rgba(59, 130, 246, 0.2) ${(((radarScale||1) - 0.3) / 3.7) * 100}%)`
+                  }}
+                />
             </div>
           )) || (mapData && mapData.name === "unsupported" && (
             <div id="radar" className={`relative overflow-hidden origin-center`}>
               <h1 className="radar_message">
-                Current map is unsupported.
+                {translation.radar_messages.unsupported_map}
               </h1>
             </div>
           )) || (
               <div id="radar" className={`relative overflow-hidden origin-center`}>
                 <h1 className="radar_message">
-                  Connected! Please wait for the host to join match.
+                  {translation.radar_messages.connected}
                 </h1>
               </div>
             )}
 
           <ul
             id="counterTerrorist"
-            className="lg:flex hidden flex-col gap-1 m-0 p-0"
+            className="lg:flex hidden flex-col gap-1 m-0 p-0 w-[48vh]"
           >
             {(playerArray && playerArray.length > 0 && playerArray
               .filter((player) => player.m_team == 3)

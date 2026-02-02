@@ -29,10 +29,40 @@ const Draggable = ({ children, imgref, avrPing, radarContentRef, ...props }) => 
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
-    if (e.clientX - dragOffset.x < imgref.width*0.5 && e.clientX - dragOffset.x > imgref.width*-0.5 && e.clientY - dragOffset.y < imgref.height*0.5 && e.clientY - dragOffset.y > imgref.height*-0.5) {
+    if (e.clientX - dragOffset.x < imgref.width*0.5 
+      && e.clientX - dragOffset.x > imgref.width*-0.5 
+      && e.clientY - dragOffset.y < imgref.height*0.5 
+      && e.clientY - dragOffset.y > imgref.height*-0.5) {
       setPosition({
         x: (e.clientX - dragOffset.x) / currentScale,
         y: (e.clientY - dragOffset.y) / currentScale,
+      });
+    }
+  };
+
+  const handleTouchStart = (e) => {
+    if (moveoverride != "false") return;
+    const touch = e.touches[0];
+
+    setIsDragging(true);
+    setDragOffset({
+      x: touch.clientX - position.x * currentScale,
+      y: touch.clientY - position.y * currentScale,
+    });
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    
+    if (touch.clientX - dragOffset.x < imgref.width*0.5 && 
+        touch.clientX - dragOffset.x > imgref.width*-0.5 && 
+        touch.clientY - dragOffset.y < imgref.height*0.5 && 
+        touch.clientY - dragOffset.y > imgref.height*-0.5) {
+      
+      setPosition({
+        x: (touch.clientX - dragOffset.x) / currentScale,
+        y: (touch.clientY - dragOffset.y) / currentScale,
       });
     }
   };
@@ -61,8 +91,12 @@ const Draggable = ({ children, imgref, avrPing, radarContentRef, ...props }) => 
     <div
       ref={draggableRef}
       onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
       onMouseMove={handleMouseMove}
+      onTouchMove={handleTouchMove}
       onMouseUp={handleMouseUp}
+      onTouchEnd={handleMouseUp}
+      onTouchCancel={handleMouseUp}
       onMouseLeave={handleMouseLeave}
       style={{
         cursor: isDragging ? "grabbing" : "grab",

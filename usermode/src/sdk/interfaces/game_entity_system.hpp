@@ -28,12 +28,14 @@ private:
 			return nullptr;
 
 		const auto entry_list = m_memory->read_t<uintptr_t>(this + 8i64 * (idx >> 9) + 16);
-		if (!entry_list)
+		if (!entry_list) {
 			return nullptr;
+		}
 
-		const auto player_controller = (uint32_t*)(112i64 * (idx & 0x1ff) + entry_list);
-		if (!player_controller)
+		const auto player_controller = (uint32_t*)(112i64 * (idx & 0x1FF) + entry_list);
+		if (!player_controller) {
 			return nullptr;
+		}
 
 		return player_controller;
 	}

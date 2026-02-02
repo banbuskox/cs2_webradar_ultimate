@@ -9,11 +9,9 @@ static std::vector<schema_data_t> m_schema_data = {};
 
 bool schema::setup()
 {
-	const auto start = std::chrono::high_resolution_clock::now();
-
 	const auto type_scope = i::m_schema_system->find_type_scope_for_module(CLIENT_DLL);
 	if (!type_scope)
-		return {};
+			return false;
 
 	const auto table_size = type_scope->m_hash_classes().size();
 	LOG_INFO("found '%d' schema classes in module '%s'", table_size, CLIENT_DLL);

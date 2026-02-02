@@ -59,7 +59,6 @@ DWORD WINAPI AppLogic(LPVOID) {
     } while (memStatus == 2);
 
     LogMessage("Found CS2.exe, initializing...");
-    std::this_thread::sleep_for(std::chrono::seconds(5));
     LogMessage("Memory initialization completed.");
 
     waitingLog = true;
@@ -94,11 +93,11 @@ DWORD WINAPI AppLogic(LPVOID) {
     }
     LogMessage("Connected to websocket.");
 
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::system_clock::now();
     bool in_match = false;
 
     while (true) {
-        auto now = std::chrono::steady_clock::now();
+        auto now = std::chrono::system_clock::now();
         if ((now - start) >= std::chrono::milliseconds(45)) {
             start = now;
             sdk::update();

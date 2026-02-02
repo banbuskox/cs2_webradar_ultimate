@@ -163,9 +163,17 @@ const Player = ({ playerData, mapData, radarImage, localTeam, averageLatency, se
           />
         )}
       </div>
+      {/* Level indicator */}
       {(mapData.leveling && !playerData.m_is_dead) && (
-        <img id="level_indicator"
+        <img className="level_indicator"
           src={playerData.m_position.z < mapData.level_change ? `./assets/icons/down.png` : `./assets/icons/up.png`}
+        />
+      )}
+
+      {/* Scope indicator */}
+      {(!playerData.m_is_dead && playerData.m_is_scoped) && (
+        <img className="scope_indicator"
+          src={`./assets/icons/scope.png`}
         />
       )}
     </div>

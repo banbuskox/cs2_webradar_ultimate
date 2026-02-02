@@ -123,6 +123,7 @@ public:
 	SCHEMA_ADD_FIELD(int32_t, m_ArmorValue, "C_CSPlayerPawn->m_ArmorValue");
 	SCHEMA_ADD_FIELD(f_vector, m_angEyeAngles, "C_CSPlayerPawn->m_angEyeAngles");
 	SCHEMA_ADD_FIELD(float, m_flFlashOverlayAlpha, "C_CSPlayerPawnBase->m_flFlashOverlayAlpha");
+	SCHEMA_ADD_FIELD(bool, m_bIsScoped, "C_CSPlayerPawn->m_bIsScoped")
 
 	const std::string get_model_name();
 };

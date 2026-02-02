@@ -15,17 +15,12 @@ const Radar = ({
   settings,
   grenadeData,
   droppedWeaponsData,
-  tempPlayer
+  tempPlayer,
+  radarZoom,
+  radarScale,
 }) => {
   const radarImageRef = useRef();
   const radarContentRef = useRef();
-  const [radarScale, setRadarScale] = useState(1);
-
-  const onScroll = (e) => {
-    const delta = e.deltaY * -0.001;
-    const newScale = radarScale + delta;
-    if (newScale>0.3&&newScale<4) setRadarScale(newScale)
-  };
 
   return (
     <div id="radar" className={`relative overflow-hidden origin-center`} ref={radarContentRef}>
@@ -35,7 +30,7 @@ const Radar = ({
       avrPing={averageLatency}
       radarContentRef={radarContentRef.current}
       >
-        <img onWheelCapture={onScroll} ref={radarImageRef} className={`w-full h-auto rounded-[20px] ${bombData && bombData.m_blow_time <= 10 && tempPlayer && !tempPlayer.m_is_dead && tempPlayer.m_bomb_damage>=tempPlayer.m_health?`alertAnim`:``}`} src={radarImage} draggable={false} style={{scale: `${radarScale}`, transition: "scale 150ms linear", filter: `contrast(${200-settings.mapBrightness||100}%)`}}/>
+        <img onWheelCapture={radarZoom} ref={radarImageRef} className={`w-full h-auto rounded-[20px] ${bombData && bombData.m_blow_time <= 10 && tempPlayer && !tempPlayer.m_is_dead && tempPlayer.m_bomb_damage>=tempPlayer.m_health?`alertAnim`:``}`} src={radarImage} draggable={false} style={{scale: `${radarScale}`, transition: "scale 150ms linear", filter: `contrast(${200-settings.mapBrightness||100}%) brightness(${settings.mapBrightness||100}%)`}}/>
       </Draggable>
 
       {playerArray && playerArray!=null && playerArray.map((player) => (

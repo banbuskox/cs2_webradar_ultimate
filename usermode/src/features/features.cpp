@@ -19,7 +19,7 @@ bool f::run()
 void f::get_map()
 {
 	const auto map_name = i::m_global_vars->m_map_name();
-	if (map_name.empty() || map_name.find("<empty>") != std::string::npos || map_name == "SetVelocityLimit")
+	if (map_name.empty() || map_name.find("<empty>") != std::string::npos || map_name == "")
 	{
 		m_data["m_map"] = "invalid";
 
